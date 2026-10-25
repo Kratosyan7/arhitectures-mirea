@@ -1,0 +1,30 @@
+ashot@linux:~/Documents/arhitectures-mirea/pr08/src/hello$ make clean
+rm -f *.o hello_world hello_world_debug
+ashot@linux:~/Documents/arhitectures-mirea/pr08/src/hello$ make release
+riscv64-linux-gnu-as hello_world.S -o hello_world.o
+riscv64-linux-gnu-ld -o hello_world hello_world.o
+riscv64-linux-gnu-strip hello_world
+ashot@linux:~/Documents/arhitectures-mirea/pr08/src/hello$ make debug
+riscv64-linux-gnu-as -g hello_world.S -o hello_world_debug.o
+riscv64-linux-gnu-ld -o hello_world_debug hello_world_debug.o
+ashot@linux:~/Documents/arhitectures-mirea/pr08/src/hello$ ls -l hello_world hello_world_debug
+-rwxrwxr-x 1 ashot ashot  728 Oct 25 13:37 hello_world
+-rwxrwxr-x 1 ashot ashot 2200 Oct 25 13:37 hello_world_debug
+ashot@linux:~/Documents/arhitectures-mirea/pr08/src/hello$ file hello_world hello_world_debug
+hello_world:       ELF 64-bit LSB executable, UCB RISC-V, double-float ABI, version 1 (SYSV), statically linked, stripped
+hello_world_debug: ELF 64-bit LSB executable, UCB RISC-V, double-float ABI, version 1 (SYSV), statically linked, with debug_info, not stripped
+ashot@linux:~/Documents/arhitectures-mirea/pr08/src/hello$ riscv64-linux-gnu-readelf -S hello_world_debug | grep -E 'debug|symtab'
+  [ 4] .debug_aranges    PROGBITS         0000000000000000  00000170
+  [ 5] .debug_info       PROGBITS         0000000000000000  000001a0
+  [ 6] .debug_abbrev     PROGBITS         0000000000000000  000001ce
+  [ 7] .debug_line       PROGBITS         0000000000000000  000001e2
+  [ 8] .debug_str        PROGBITS         0000000000000000  0000024b
+  [ 9] .symtab           SYMTAB           0000000000000000  000002a0
+ashot@linux:~/Documents/arhitectures-mirea/pr08/src/hello$ make run
+qemu-riscv64 ./hello_world
+Мирзоян А.О._ИКБО-41-25_14
+ashot@linux:~/Documents/arhitectures-mirea/pr08/src/hello$ make run-debug
+qemu-riscv64 ./hello_world_debug
+Мирзоян А.О._ИКБО-41-25_14
+ashot@linux:~/Documents/arhitectures-mirea/pr08/src/hello$ make
+make: Nothing to be done for 'all'.

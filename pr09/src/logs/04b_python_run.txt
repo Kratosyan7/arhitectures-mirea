@@ -1,0 +1,9 @@
+ashot@linux:~/Documents/arhitectures-mirea/pr09/src/task4$ file -L ../task3/lib/libup.so | sed 's/, BuildID.*//'
+../task3/lib/libup.so: ELF 64-bit LSB shared object, UCB RISC-V, RVC, double-float ABI, version 1 (SYSV), dynamically linked
+ashot@linux:~/Documents/arhitectures-mirea/pr09/src/task4$ python3 --version; python3 uppertst.py 2>&1 | tail -1
+Python 3.12.3
+OSError: ~/Documents/arhitectures-mirea/pr09/src/task4/../task3/lib/libup.so: cannot open shared object file: No such file or directory
+ashot@linux:~/Documents/arhitectures-mirea/pr09/src/task4$ ./run_python_rv64.sh uppertst.py
+мирзоян_а_о_икбо_41_25_вариант_14
+мирзоян_а_о_икбо_41_25_вариант_14
+54

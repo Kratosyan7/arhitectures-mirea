@@ -1,0 +1,32 @@
+ashot@linux:~/Documents/arhitectures-mirea/pr09/src/task3$ make clean
+rm -rf *.o uppertst3 uppertst4 lib
+ashot@linux:~/Documents/arhitectures-mirea/pr09/src/task3$ make uppertst3
+riscv64-linux-gnu-as  upper.S -o upper.o
+riscv64-linux-gnu-gcc -shared -Wl,-soname,libup.so.1 -o libup.so.1.0 upper.o
+mkdir -p lib
+mv libup.so.1.0 lib
+ln -sf libup.so.1.0 lib/libup.so.1
+ln -sf libup.so.1.0 lib/libup.so
+riscv64-linux-gnu-gcc -o uppertst3 uppertst.c -Llib -lup -Wl,-rpath,'$ORIGIN/lib'
+ashot@linux:~/Documents/arhitectures-mirea/pr09/src/task3$ ls -l lib
+total 8
+lrwxrwxrwx 1 ashot ashot   12 Oct 25 13:42 libup.so -> libup.so.1.0
+lrwxrwxrwx 1 ashot ashot   12 Oct 25 13:42 libup.so.1 -> libup.so.1.0
+-rwxrwxr-x 1 ashot ashot 7152 Oct 25 13:42 libup.so.1.0
+ashot@linux:~/Documents/arhitectures-mirea/pr09/src/task3$ file lib/libup.so.1.0 | sed 's/, BuildID.*//'
+lib/libup.so.1.0: ELF 64-bit LSB shared object, UCB RISC-V, RVC, double-float ABI, version 1 (SYSV), dynamically linked
+ashot@linux:~/Documents/arhitectures-mirea/pr09/src/task3$ riscv64-linux-gnu-readelf -d lib/libup.so.1.0 | grep SONAME
+ 0x000000000000000e (SONAME)             Library soname: [libup.so.1]
+ashot@linux:~/Documents/arhitectures-mirea/pr09/src/task3$ riscv64-linux-gnu-nm -D lib/libup.so.1.0 | grep upper
+0000000000000450 T mytoupper
+ashot@linux:~/Documents/arhitectures-mirea/pr09/src/task3$ riscv64-linux-gnu-readelf -d uppertst3 | grep -E 'NEEDED|RUNPATH'
+ 0x0000000000000001 (NEEDED)             Shared library: [libup.so.1]
+ 0x0000000000000001 (NEEDED)             Shared library: [libc.so.6]
+ 0x0000000000000001 (NEEDED)             Shared library: [ld-linux-riscv64-lp64d.so.1]
+ 0x000000000000001d (RUNPATH)            Library runpath: [$ORIGIN/lib]
+ashot@linux:~/Documents/arhitectures-mirea/pr09/src/task3$ qemu-riscv64 ./uppertst3
+Before str: мирзоян_а_о_икбо_41_25_вариант_14
+After str: мирзоян_а_о_икбо_41_25_вариант_14
+Str len = 54
+ashot@linux:~/Documents/arhitectures-mirea/pr09/src/task3$ cd .. && qemu-riscv64 task3/uppertst3 | head -1
+Before str: мирзоян_а_о_икбо_41_25_вариант_14

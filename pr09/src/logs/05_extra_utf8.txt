@@ -1,0 +1,25 @@
+ashot@linux:~/Documents/arhitectures-mirea/pr09/src/extra$ make clean
+rm -f *.o libup8.so uppertst_utf8
+ashot@linux:~/Documents/arhitectures-mirea/pr09/src/extra$ make
+riscv64-linux-gnu-as upper.S -o upper.o
+riscv64-linux-gnu-as upper_utf8.S -o upper_utf8.o
+riscv64-linux-gnu-gcc -shared -o libup8.so upper.o upper_utf8.o
+riscv64-linux-gnu-gcc -o uppertst_utf8 uppertst_utf8.c -L. -lup8 -Wl,-rpath,'$ORIGIN'
+ashot@linux:~/Documents/arhitectures-mirea/pr09/src/extra$ make run
+qemu-riscv64 ./uppertst_utf8
+Before str:     мирзоян_а_о_икбо_41_25_вариант_14
+mytoupper:      мирзоян_а_о_икбо_41_25_вариант_14 (len = 54)
+mytoupper_utf8: МИРЗОЯН_А_О_ИКБО_41_25_ВАРИАНТ_14 (len = 54)
+
+Before str:     This is a test.
+mytoupper:      THIS IS A TEST. (len = 16)
+mytoupper_utf8: THIS IS A TEST. (len = 16)
+
+Before str:     ёжик в тумане, Ёлка; abc-xyz {|}
+mytoupper:      ёжик в тумане, Ёлка; ABC-XYZ {|} (len = 48)
+mytoupper_utf8: ЁЖИК В ТУМАНЕ, ЁЛКА; ABC-XYZ {|} (len = 48)
+
+../task4/run_python_rv64.sh uppertst_utf8.py
+мирзоян_а_о_икбо_41_25_вариант_14
+МИРЗОЯН_А_О_ИКБО_41_25_ВАРИАНТ_14
+54

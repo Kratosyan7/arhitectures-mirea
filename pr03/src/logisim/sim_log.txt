@@ -1,0 +1,5 @@
+исходное состояние: S-шина=0 | AC=0 Flags=0 IR=0 InpR=0 MAR=0 MDR=0 OutR=0 PC=0
+IR <- Ввод: S-шина=5A3C | AC=0 Flags=0 IR=5A3C InpR=0 MAR=0 MDR=0 OutR=0 PC=0
+AC <- Ввод: S-шина=FF0 | AC=FF0 Flags=0 IR=5A3C InpR=0 MAR=0 MDR=0 OutR=0 PC=0
+слово 010 001 001010 1011 0 0 (до фронта): S-шина=55CC | AC=FF0 Flags=0 IR=5A3C InpR=0 MAR=0 MDR=0 OutR=0 PC=0
+MDR <- IR xor AC: S-шина=55CC | AC=FF0 Flags=0 IR=5A3C InpR=0 MAR=0 MDR=55CC OutR=0 PC=0

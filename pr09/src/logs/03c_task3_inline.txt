@@ -1,0 +1,26 @@
+ashot@linux:~/Documents/arhitectures-mirea/pr09/src/task3$ make uppertst4
+riscv64-linux-gnu-gcc -o uppertst4 uppertst4.c
+ashot@linux:~/Documents/arhitectures-mirea/pr09/src/task3$ file uppertst4 | sed 's/, BuildID.*//'
+uppertst4: ELF 64-bit LSB pie executable, UCB RISC-V, RVC, double-float ABI, version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-riscv64-lp64d.so.1
+ashot@linux:~/Documents/arhitectures-mirea/pr09/src/task3$ qemu-riscv64 ./uppertst4
+Before str: мирзоян_а_о_икбо_41_25_вариант_14
+After str: мирзоян_а_о_икбо_41_25_вариант_14
+Str len = 54
+ashot@linux:~/Documents/arhitectures-mirea/pr09/src/task3$ riscv64-linux-gnu-objdump -d uppertst4 | sed -n '/mv\tt4/,/sub\t/p'
+ 7a0:	8eba                	mv	t4,a4
+
+00000000000007a2 <loop>:
+ 7a2:	00078383          	lb	t2,0(a5)
+ 7a6:	0785                	addi	a5,a5,1
+ 7a8:	07a00e13          	li	t3,122
+ 7ac:	007e4763          	blt	t3,t2,7ba <cont>
+ 7b0:	06100e13          	li	t3,97
+ 7b4:	01c3c363          	blt	t2,t3,7ba <cont>
+ 7b8:	1381                	addi	t2,t2,-32
+
+00000000000007ba <cont>:
+ 7ba:	00770023          	sb	t2,0(a4)
+ 7be:	0705                	addi	a4,a4,1
+ 7c0:	4e01                	li	t3,0
+ 7c2:	ffc390e3          	bne	t2,t3,7a2 <loop>
+ 7c6:	41d707b3          	sub	a5,a4,t4

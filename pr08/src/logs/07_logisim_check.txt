@@ -1,0 +1,16 @@
+ashot@linux:~/Documents/arhitectures-mirea/pr08/src/logisim$ python3 gen_riscv_decoder.py
+riscv_decoder.circ written
+ashot@linux:~/Documents/arhitectures-mirea/pr08/src/logisim$ java -jar ../../../.tools/logisim/logisim.jar riscv_decoder.circ -tty stats | tail -3
+24	24	Label       	Base
+65	65	TOTAL (without project's subcircuits)
+65	65	TOTAL (with subcircuits)
+ashot@linux:~/Documents/arhitectures-mirea/pr08/src/logisim$ jjs -J-Djava.awt.headless=true -cp ../../../.tools/logisim/logisim.jar check.js -- riscv_decoder.circ vectors_decoder.json
+sel	rs1_val	|	opcode	rd	funct3	rs1	rs2	funct7	imm12	is_addi	result
+0	00000000	|	13	0a	0	00	01	00	001	1	00000001
+1	00000000	|	17	0b	1	00	00	00	000	0	00000000
+2	000110ec	|	13	0b	0	0b	18	00	018	1	00011104
+3	00000000	|	13	0c	0	00	08	01	028	1	00000028
+4	00000000	|	13	11	0	00	00	02	040	1	00000040
+5	00000000	|	73	00	0	00	00	00	000	0	00000000
+6	00000000	|	6f	00	7	1f	09	7f	fe9	0	ffffffe9
+7	00000000	|	13	11	0	00	1d	02	05d	1	0000005d

@@ -1,0 +1,7 @@
+ashot@linux:~/pr12/src$ python bench_gpu.py
+640x360: Julia median    4.9 ms (min    4.7, max    5.6) | пустое ядро    5.5 ms | разность   -0.5 ms
+1280x720: Julia median    9.3 ms (min    8.6, max   18.4) | пустое ядро    8.8 ms | разность    0.5 ms
+1920x1080: Julia median   40.9 ms (min   37.8, max   48.8) | пустое ядро   51.9 ms | разность  -11.0 ms
+2560x1440: Julia median   84.9 ms (min   76.4, max   91.4) | пустое ядро   76.0 ms | разность    8.9 ms
+3840x2160: Julia median  136.4 ms (min  124.2, max  150.0) | пустое ядро  124.3 ms | разность   12.1 ms
+7680x4320: Julia median  417.4 ms (min  343.8, max  430.5) | пустое ядро  358.6 ms | разность   58.8 ms

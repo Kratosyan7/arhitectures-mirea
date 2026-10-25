@@ -1,0 +1,18 @@
+.tools/
+__pycache__/
+*.pyc
+.venv/
+
+# скомпилированные бинарники и объектники (воспроизводятся сборкой)
+pr*/src/**/*.o
+pr10/src/bench_upper
+pr10/src/tolower_bench
+pr10/src/tolower_O2
+pr10/src/ghidra_restored
+pr10/src/creditcard
+pr10/src/creditcardpie
+pr10/src/creditcard_probe
+pr10/src/*.objdump
+pr10/src/ghidra/
+# предпросмотры рендера Logisim от агентов (в отчётах используются GUI-скриншоты)
+pr*/src/logisim/preview_*.png

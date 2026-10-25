@@ -1,0 +1,25 @@
+ashot@linux:~/Documents/arhitectures-mirea/pr09/src/task2$ make clean
+rm -f *.o libupper.a uppertst2
+ashot@linux:~/Documents/arhitectures-mirea/pr09/src/task2$ make
+riscv64-linux-gnu-as  upper.S -o upper.o
+riscv64-linux-gnu-ar -cvq libupper.a upper.o
+a - upper.o
+riscv64-linux-gnu-gcc -o uppertst2 uppertst.c libupper.a
+ashot@linux:~/Documents/arhitectures-mirea/pr09/src/task2$ riscv64-linux-gnu-ar -t libupper.a
+upper.o
+ashot@linux:~/Documents/arhitectures-mirea/pr09/src/task2$ riscv64-linux-gnu-nm libupper.a
+
+upper.o:
+000000000000002c t cont
+0000000000000010 t loop
+0000000000000000 T mytoupper
+ashot@linux:~/Documents/arhitectures-mirea/pr09/src/task2$ riscv64-linux-gnu-nm uppertst2 | grep -i upper
+0000000000000808 T mytoupper
+ashot@linux:~/Documents/arhitectures-mirea/pr09/src/task2$ riscv64-linux-gnu-readelf -d uppertst2 | grep NEEDED
+ 0x0000000000000001 (NEEDED)             Shared library: [libc.so.6]
+ 0x0000000000000001 (NEEDED)             Shared library: [ld-linux-riscv64-lp64d.so.1]
+ashot@linux:~/Documents/arhitectures-mirea/pr09/src/task2$ make run
+qemu-riscv64 ./uppertst2
+Before str: мирзоян_а_о_икбо_41_25_вариант_14
+After str: мирзоян_а_о_икбо_41_25_вариант_14
+Str len = 54

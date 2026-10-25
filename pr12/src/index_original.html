@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+ <meta charset="UTF-8" />
+ <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+ <title>WebGPU Lab: Procedural GPU/CPU Sandbox</title>
+  <style>
+  :root {
+    --bg: #f4f6f8;
+    --panel: #ffffff;
+    --border: #d9dee5;
+    --text: #1f2933;
+    --subtle: #5c6773;
+    --accent: #0b63ce;
+    --warn-bg: #fff7eb;
+    --warn-border: #ffd29b;
+    --log-bg: #11161d;
+    --log-text: #d9f2ff;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 20px;
+    font-family: Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+  }
+  h1, h2, h3 { margin: 0 0 10px 0; }
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+
+    margin-bottom: 10px;
+  }
+  .row:last-child { margin-bottom: 0; }
+  label { font-weight: 600; }
+  select, button, input[type="file"], input[type="number"] {
+    padding: 8px 10px;
+    border: 1px solid #b8c2cc;
+    border-radius: 6px;
+    background: white;
+    color: var(--text);
+  }
+  .size-input {
+    width: 110px;
+  }
+
+  button { cursor: pointer; }
+  button:hover { background: #eef3f7; }
+  .btn-primary {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+  }
+  .btn-primary:hover { background: #0954ab; }
+  .small {
+    color: var(--subtle);
+    font-size: 14px;
+    line-height: 1.55;
+  }
+  .warning {
+    color: #8a3b00;
+    background: var(--warn-bg);
+    border: 1px solid var(--warn-border);
+    padding: 10px;
+    border-radius: 8px;
+    line-height: 1.45;
+  }
+  .grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+  .preview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 16px;
+  }
+  .metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 12px;
+  }
+  .metric {
+    background: #fafbfd;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+  }
+  .editor {
+    width: 100%;
+    min-height: 340px;
+    resize: vertical;
+    border: 1px solid #b8c2cc;
+    border-radius: 8px;
+    padding: 12px;
+    font-family: Consolas, Menlo, monospace;
+    font-size: 13px;
+    line-height: 1.5;
+    background: #f9fbfd;
+    color: #1b2733;
+    tab-size: 2;
+  }
+  .preview-canvas {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    border: 1px solid #c9d2dc;
+    background: white;
+    border-radius: 8px;
+    display: block;
+  }
+  .log {
+    white-space: pre-wrap;
+    background: var(--log-bg);
+    color: var(--log-text);
+    padding: 12px;
+    border-radius: 8px;
+    min-height: 150px;
+    font-family: Consolas, monospace;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .hint-box {
+    background: #f8fbff;
+    border: 1px solid #dbe8f6;
+    border-radius: 8px;
+    padding: 12px;
+    line-height: 1.5;
+    margin-bottom: 10px;
+  }
+  details.hint-box summary {
+    cursor: pointer;
+    font-weight: 600;
+  }
+  details.hint-box[open] summary {
+    margin-bottom: 8px;
+  }
+  code.inline {
+    background: #eef3f7;
+    padding: 2px 6px;
+    border-radius: 5px;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+  }
+  @media (max-width: 980px) {
+    .grid-2 { grid-template-columns: 1fr; }
+  }
+  </style>
+</head>
+<body>
+ <h1>Практическая работа 12 "Работа с графическим процессором"</h1>
+
+ <div class="panel">
+  <div class="row">
+    <label for="resolutionWidth">Разрешение:</label>
+    <input id="resolutionWidth" class="size-input" type="number" min="16" max="8192" step="1" value="1280" />
+    <span>×</span>
+    <input id="resolutionHeight" class="size-input" type="number" min="16" max="8192" step="1" value="720" />
+    <button id="generateBtn" class="btn-primary">Сгенерировать demo-источник</button>
+    <label for="imageInput">или загрузить своё:</label>
+    <input id="imageInput" type="file" accept="image/*" />
+    <button id="clearBtn">Очистить всё</button>
+  </div>
+
+  <div class="row">
+   <button id="cpuBtn">Запустить CPU</button>
+   <button id="gpuBtn">Запустить GPU</button>
+   <button id="bothBtn">Запустить CPU + GPU</button>
+  </div>
+  <div id="supportInfo" class="warning" style="margin-top:10px;"></div>
+ </div>
+
+ <div class="panel preview-grid">
+  <div>
+   <h2>CPU</h2>
+   <canvas id="cpuCanvas" class="preview-canvas" width="960" height="540"></canvas>
+   <div class="small" id="cpuInfo">CPU-результат ещё не рассчитан</div>
+  </div>
+  <div>
+   <h2>GPU</h2>
+   <canvas id="gpuCanvas" class="preview-canvas" width="960" height="540"></canvas>
+   <div class="small" id="gpuInfo">GPU-результат ещё не рассчитан</div>
+  </div>
+ </div>
+
+ <div class="panel metrics">
+  <div class="metric"><strong>CPU time:</strong> <span id="cpuTime">—</span></div>
+  <div class="metric"><strong>GPU time:</strong> <span id="gpuTime">—</span></div>
+  <div class="metric"><strong>Acceleration:</strong> <span id="speedup">—</span></div>
+  <div class="metric"><strong>Mean diff:</strong> <span id="meanDiff">—</span></div>
+  <div class="metric"><strong>Max diff:</strong> <span id="maxDiff">—</span></div>
+  <div class="metric"><strong>Current size:</strong> <span id="currentSize">—</span></div>
+ </div>
+
+ <div class="panel grid-2">
+   <div>
+    <h2>Код CPU (JavaScript)</h2>
+    <details class="hint-box small">
+     <summary>Подсказка по API CPU</summary>
+     Тело функции должно вернуть <code class="inline">[r, g, b, a]</code> с диапазоном <code class="inline">0..1</code>.<br />
+     Доступно: <code class="inline">sample(dx, dy)</code>, <code class="inline">sampleNorm(u, v)</code>, <code class="inline">rgba(...)</code>, <code class="inline">luminance(rgb)</code>, <code class="inline">fract(x)</code>, <code class="inline">mix(a,b,t)</code>, <code class="inline">smoothstep(a,b,x)</code>, <code class="inline">hash2(x,y)</code>, <code class="inline">noise2(x,y)</code>, <code class="inline">fbm(x,y)</code>, <code class="inline">palette(t)</code>, а также <code class="inline">x, y, width, height, uvx, uvy, cx, cy</code>.
+    </details>
+    <textarea id="cpuCode" class="editor"></textarea>
+   </div>
+   <div>
+    <h2>Код GPU (WGSL)</h2>
+    <details class="hint-box small">
+     <summary>Подсказка по API GPU</summary>
+     Тело функции должно вернуть <code class="inline">vec4&lt;f32&gt;</code>.<br />
+     Доступно: <code class="inline">sampleAt(ix, iy)</code>, <code class="inline">sampleNorm(uvx, uvy)</code>, <code class="inline">rgba(...)</code>, <code class="inline">luminance(rgb)</code>, <code class="inline">fractf(x)</code>, <code class="inline">mix1(a,b,t)</code>, <code class="inline">smoothstep1(a,b,x)</code>, <code class="inline">hash21(vec2)</code>, <code class="inline">noise2(vec2)</code>, <code class="inline">fbm(vec2)</code>, <code class="inline">palette(t)</code>, а также <code class="inline">x, y, uvx, uvy, cx, cy</code>.
+    </details>
+    <textarea id="gpuCode" class="editor"></textarea>
+   </div>
+ </div>
+
+ <div class="panel">
+  <h2>Лог</h2>
+  <div id="log" class="log"></div>
+ </div>
+
+  <script>
+  const cpuCanvas = document.getElementById('cpuCanvas');
+  const gpuCanvas = document.getElementById('gpuCanvas');
+  const cpuCtx = cpuCanvas.getContext('2d');
+  const gpuCtx = gpuCanvas.getContext('2d');
+
+  const imageInput = document.getElementById('imageInput');
+  const resolutionWidthEl = document.getElementById('resolutionWidth');
+  const resolutionHeightEl = document.getElementById('resolutionHeight');
+  const clearBtn = document.getElementById('clearBtn');
+  const cpuCodeEl = document.getElementById('cpuCode');
+  const gpuCodeEl = document.getElementById('gpuCode');
+  const cpuTimeEl = document.getElementById('cpuTime');
+  const gpuTimeEl = document.getElementById('gpuTime');
+  const speedupEl = document.getElementById('speedup');
+  const meanDiffEl = document.getElementById('meanDiff');
+  const maxDiffEl = document.getElementById('maxDiff');
+  const supportInfo = document.getElementById('supportInfo');
+  const logEl = document.getElementById('log');
+  const currentSizeEl = document.getElementById('currentSize');
+  const cpuInfoEl = document.getElementById('cpuInfo');
+  const gpuInfoEl = document.getElementById('gpuInfo');
+
+  let gpuDevice = null;
+  let gpuAdapter = null;
+  let sourcePixels = null;
+  let sourceWidth = 0;
+  let sourceHeight = 0;
+  let lastCpuPixels = null;
+  let lastGpuPixels = null;
+
+  const workgroupSizeX = 16;
+  const workgroupSizeY = 16;
+  const demoCpuCode = `const c = sample(0, 0);\nconst gray = luminance(c);\nreturn rgba(gray, gray, gray, c[3]);`;
+  const demoGpuCode = `let c = sampleAt(i32(x), i32(y));\nlet gray = luminance(c.xyz);\nreturn rgba(gray, gray, gray, c.w);`;
+
+  function log(msg) {
+    const time = new Date().toLocaleTimeString();
+    logEl.textContent += `[${time}] ${msg}\n`;
+    logEl.scrollTop = logEl.scrollHeight;
+  }
+
+  function clamp01(v) {
+    if (!Number.isFinite(v)) return 0;
+    return Math.max(0, Math.min(1, v));
+  }
+
+  function rgba(r, g, b, a = 1.0) {
+    return [clamp01(r), clamp01(g), clamp01(b), clamp01(a)];
+  }
+
+  function luminance(rgb) {
+    return 0.299 * rgb[0] + 0.587 * rgb[1] + 0.114 * rgb[2];
+  }
+
+  function fract(x) {
+    return x - Math.floor(x);
+  }
+
+  function mix(a, b, t) {
+    return a * (1.0 - t) + b * t;
+  }
+
+  function smoothstep(edge0, edge1, x) {
+    const denom = Math.max(1e-6, edge1 - edge0);
+    const t = clamp01((x - edge0) / denom);
+    return t * t * (3.0 - 2.0 * t);
+  }
+
+  function hash2(x, y) {
+    return fract(Math.sin(x * 127.1 + y * 311.7) * 43758.5453123);
+  }
+
+  function noise2(x, y) {
+    const ix = Math.floor(x);
+    const iy = Math.floor(y);
+    const fx = fract(x);
+    const fy = fract(y);
+    const ux = fx * fx * (3.0 - 2.0 * fx);
+    const uy = fy * fy * (3.0 - 2.0 * fy);
+    const a = hash2(ix, iy);
+    const b = hash2(ix + 1, iy);
+    const c = hash2(ix, iy + 1);
+    const d = hash2(ix + 1, iy + 1);
+    return mix(mix(a, b, ux), mix(c, d, ux), uy);
+  }
+
+  function fbm(x, y) {
+    let v = 0.0;
+    let a = 0.5;
+    let px = x;
+    let py = y;
+    for (let i = 0; i < 5; i++) {
+      v += a * noise2(px, py);
+      px = px * 2.03 + 17.13;
+      py = py * 2.01 + 8.73;
+      a *= 0.5;
+    }
+    return v;
+  }
+
+  function palette(t) {
+    return [
+      0.5 + 0.5 * Math.cos(6.2831853 * (t + 0.00)),
+      0.5 + 0.5 * Math.cos(6.2831853 * (t + 0.33)),
+      0.5 + 0.5 * Math.cos(6.2831853 * (t + 0.67)),
+    ];
+  }
+
+  function setCurrentSize(width, height) {
+    if (!Number.isFinite(width) || !Number.isFinite(height) || width <= 0 || height <= 0) {
+      currentSizeEl.textContent = '—';
+      return;
+    }
+    currentSizeEl.textContent = `${width} × ${height}`;
+  }
+
+  function getRequestedResolution() {
+    const width = Math.floor(Number(resolutionWidthEl.value));
+    const height = Math.floor(Number(resolutionHeightEl.value));
+    if (!Number.isFinite(width) || !Number.isFinite(height) || width < 16 || height < 16) {
+      throw new Error('Разрешение должно быть целыми числами не меньше 16.');
+    }
+    if (width > 8192 || height > 8192) {
+      throw new Error('Разрешение слишком большое. Максимум 8192 × 8192.');
+    }
+    resolutionWidthEl.value = String(width);
+    resolutionHeightEl.value = String(height);
+    return { width, height };
+  }
+
+  function clearMetrics() {
+    cpuTimeEl.textContent = '—';
+    gpuTimeEl.textContent = '—';
+    speedupEl.textContent = '—';
+    meanDiffEl.textContent = '—';
+    maxDiffEl.textContent = '—';
+    delete cpuTimeEl.dataset.value;
+    delete gpuTimeEl.dataset.value;
+    lastCpuPixels = null;
+    lastGpuPixels = null;
+  }
+
+  function updateSpeedup() {
+    const cpu = parseFloat(cpuTimeEl.dataset.value || 'NaN');
+    const gpu = parseFloat(gpuTimeEl.dataset.value || 'NaN');
+    if (!Number.isNaN(cpu) && !Number.isNaN(gpu) && gpu > 0) {
+      speedupEl.textContent = (cpu / gpu).toFixed(2) + 'x';
+    }
+  }
+
+  function compareOutputs(a, b) {
+    if (!a || !b || a.length !== b.length) {
+      meanDiffEl.textContent = '—';
+      maxDiffEl.textContent = '—';
+      return;
+    }
+    let sum = 0;
+    let max = 0;
+    const count = a.length;
+    for (let i = 0; i < count; i++) {
+      const d = Math.abs(a[i] - b[i]);
+      sum += d;
+      if (d > max) max = d;
+    }
+    meanDiffEl.textContent = (sum / count).toFixed(3);
+    maxDiffEl.textContent = max.toFixed(0);
+  }
+
+  function createDemoImage(width, height) {
+    const pixels = new Uint8ClampedArray(width * height * 4);
+    const cell = Math.max(8, Math.floor(Math.min(width, height) / 24));
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        const i = (y * width + x) * 4;
+        const nx = x / Math.max(1, width - 1);
+        const ny = y / Math.max(1, height - 1);
+        const checker = (((Math.floor(x / cell) + Math.floor(y / cell)) & 1) === 0) ? 1.0 : 0.35;
+        const dx = x - width * 0.5;
+        const dy = y - height * 0.5;
+        const dist = Math.sqrt(dx * dx + dy * dy) / Math.max(1, Math.min(width, height) * 0.55);
+        const radial = Math.max(0, 1.0 - dist);
+        const waves = 0.5 + 0.5 * Math.sin(nx * 18.0) * Math.cos(ny * 12.0);
+        const r = (0.15 + 0.85 * nx) * checker;
+        const g = (0.15 + 0.85 * ny) * (0.65 + 0.35 * waves);
+        const b = 0.15 + 0.7 * radial + 0.15 * waves;
+        pixels[i + 0] = Math.round(clamp01(r) * 255);
+        pixels[i + 1] = Math.round(clamp01(g) * 255);
+        pixels[i + 2] = Math.round(clamp01(b) * 255);
+        pixels[i + 3] = 255;
+      }
+    }
+    return pixels;
+  }
+
+  function renderPixelsPreview(ctx, pixels, width, height) {
+    const outW = ctx.canvas.width;
+    const outH = ctx.canvas.height;
+    const preview = new Uint8ClampedArray(outW * outH * 4);
+    for (let y = 0; y < outH; y++) {
+      const sy = Math.min(height - 1, Math.floor((y / outH) * height));
+      for (let x = 0; x < outW; x++) {
+        const sx = Math.min(width - 1, Math.floor((x / outW) * width));
+        const si = (sy * width + sx) * 4;
+        const di = (y * outW + x) * 4;
+        preview[di + 0] = pixels[si + 0];
+        preview[di + 1] = pixels[si + 1];
+        preview[di + 2] = pixels[si + 2];
+        preview[di + 3] = pixels[si + 3];
+      }
+    }
+    ctx.putImageData(new ImageData(preview, outW, outH), 0, 0);
+  }
+
+  function setSourceImage(pixels, width, height) {
+    sourcePixels = pixels;
+    sourceWidth = width;
+    sourceHeight = height;
+    setCurrentSize(width, height);
+    clearMetrics();
+    cpuCtx.clearRect(0, 0, cpuCanvas.width, cpuCanvas.height);
+    gpuCtx.clearRect(0, 0, gpuCanvas.width, gpuCanvas.height);
+    cpuInfoEl.textContent = `CPU-результат ещё не рассчитан (${width} × ${height})`;
+    gpuInfoEl.textContent = `GPU-результат ещё не рассчитан (${width} × ${height})`;
+  }
+
+  function resizePixels(pixels, srcWidth, srcHeight, dstWidth, dstHeight) {
+    const srcCanvas = document.createElement('canvas');
+    srcCanvas.width = srcWidth;
+    srcCanvas.height = srcHeight;
+    const srcCtx = srcCanvas.getContext('2d');
+    srcCtx.putImageData(new ImageData(new Uint8ClampedArray(pixels), srcWidth, srcHeight), 0, 0);
+
+    const dstCanvas = document.createElement('canvas');
+    dstCanvas.width = dstWidth;
+    dstCanvas.height = dstHeight;
+    const dstCtx = dstCanvas.getContext('2d');
+    dstCtx.drawImage(srcCanvas, 0, 0, dstWidth, dstHeight);
+
+    return new Uint8ClampedArray(dstCtx.getImageData(0, 0, dstWidth, dstHeight).data);
+  }
+
+  function applyRequestedResolutionToCurrentSource() {
+    if (!sourcePixels) return;
+    const { width, height } = getRequestedResolution();
+    if (width === sourceWidth && height === sourceHeight) return;
+    const resized = resizePixels(sourcePixels, sourceWidth, sourceHeight, width, height);
+    setSourceImage(resized, width, height);
+    log(`Источник приведён к ${width} × ${height}.`);
+  }
+
+  function clearWorkspace() {
+    const hasSource = !!sourcePixels;
+    cpuCodeEl.value = '';
+    gpuCodeEl.value = '';
+    imageInput.value = '';
+    clearMetrics();
+    cpuCtx.clearRect(0, 0, cpuCanvas.width, cpuCanvas.height);
+    gpuCtx.clearRect(0, 0, gpuCanvas.width, gpuCanvas.height);
+    if (hasSource) {
+      setCurrentSize(sourceWidth, sourceHeight);
+      cpuInfoEl.textContent = `CPU-результат ещё не рассчитан (${sourceWidth} × ${sourceHeight})`;
+      gpuInfoEl.textContent = `GPU-результат ещё не рассчитан (${sourceWidth} × ${sourceHeight})`;
+      log('Код и результаты очищены. Текущий источник сохранён.');
+      return;
+    }
+    setCurrentSize(NaN, NaN);
+    cpuInfoEl.textContent = 'CPU-результат ещё не рассчитан';
+    gpuInfoEl.textContent = 'GPU-результат ещё не рассчитан';
+    log('Рабочая область очищена.');
+  }
+
+  function packPixelsToU32(bytes) {
+    const count = bytes.length >>> 2;
+    const packed = new Uint32Array(count);
+    for (let i = 0, p = 0; i < count; i++, p += 4) {
+      packed[i] = bytes[p] | (bytes[p + 1] << 8) | (bytes[p + 2] << 16) | (bytes[p + 3] << 24);
+    }
+    return packed;
+  }
+
+  function unpackU32ToPixels(packed) {
+    const bytes = new Uint8ClampedArray(packed.length * 4);
+    for (let i = 0, p = 0; i < packed.length; i++, p += 4) {
+      const v = packed[i];
+      bytes[p] = v & 0xff;
+      bytes[p + 1] = (v >>> 8) & 0xff;
+      bytes[p + 2] = (v >>> 16) & 0xff;
+      bytes[p + 3] = (v >>> 24) & 0xff;
+    }
+    return bytes;
+  }
+
+  function compileCpuKernel(studentBody) {
+    return new Function(
+      'x', 'y', 'width', 'height', 'uvx', 'uvy', 'cx', 'cy',
+      'sample', 'sampleNorm', 'rgba', 'luminance', 'clamp01', 'fract', 'mix', 'smoothstep', 'hash2', 'noise2', 'fbm', 'palette',
+      studentBody
+    );
+  }
+
+  function processCpu(inputPixelsBytes, width, height) {
+    const output = new Uint8ClampedArray(inputPixelsBytes.length);
+    const kernel = compileCpuKernel(cpuCodeEl.value);
+
+    function sampleAbs(ix, iy) {
+      const sx = Math.max(0, Math.min(width - 1, ix));
+      const sy = Math.max(0, Math.min(height - 1, iy));
+      const idx = (sy * width + sx) * 4;
+      return [
+        inputPixelsBytes[idx] / 255,
+        inputPixelsBytes[idx + 1] / 255,
+        inputPixelsBytes[idx + 2] / 255,
+        inputPixelsBytes[idx + 3] / 255,
+      ];
+    }
+
+    for (let y = 0; y < height; y++) {
+      const uvy = y / Math.max(1, height - 1);
+      const cy = uvy * 2.0 - 1.0;
+      for (let x = 0; x < width; x++) {
+        const uvx = x / Math.max(1, width - 1);
+        const cx = uvx * 2.0 - 1.0;
+        const sample = (dx, dy) => sampleAbs(x + dx, y + dy);
+        const sampleNorm = (u, v) => sampleAbs(Math.round(clamp01(u) * (width - 1)), Math.round(clamp01(v) * (height - 1)));
+        let out;
+        try {
+          out = kernel(x, y, width, height, uvx, uvy, cx, cy,
+            sample, sampleNorm, rgba, luminance, clamp01, fract, mix, smoothstep, hash2, noise2, fbm, palette);
+        } catch (err) {
+          throw new Error(`CPU kernel error at pixel (${x}, ${y}): ${err.message}`);
+        }
+        if (!Array.isArray(out) || out.length < 4) {
+          throw new Error('CPU kernel must return [r, g, b, a].');
+        }
+        const idx = (y * width + x) * 4;
+        output[idx] = Math.round(clamp01(out[0]) * 255);
+        output[idx + 1] = Math.round(clamp01(out[1]) * 255);
+        output[idx + 2] = Math.round(clamp01(out[2]) * 255);
+        output[idx + 3] = Math.round(clamp01(out[3]) * 255);
+      }
+    }
+    return output;
+  }
+
+  async function initWebGPU() {
+    if (gpuDevice) return gpuDevice;
+    if (!navigator.gpu) {
+      throw new Error('WebGPU не поддерживается в этом браузере или недоступен в текущем режиме запуска.');
+    }
+    gpuAdapter = await navigator.gpu.requestAdapter();
+    if (!gpuAdapter) {
+      throw new Error('Не удалось получить GPUAdapter.');
+    }
+    gpuDevice = await gpuAdapter.requestDevice();
+    gpuDevice.lost.then((info) => {
+      log(`GPU device lost: ${info.message || 'no message'}`);
+      gpuDevice = null;
+    });
+    return gpuDevice;
+  }
+
+  function buildShader(studentBody) {
+    return `
+struct Params {
+  width: u32,
+  height: u32,
+  _pad0: u32,
+  _pad1: u32,
+};
+
+@group(0) @binding(0) var<storage, read> inputPixels: array<u32>;
+@group(0) @binding(1) var<storage, read_write> outputPixels: array<u32>;
+@group(0) @binding(2) var<uniform> params: Params;
+
+fn clamp01(v: f32) -> f32 {
+  return clamp(v, 0.0, 1.0);
+}
+
+fn rgba(r: f32, g: f32, b: f32, a: f32) -> vec4<f32> {
+  return vec4<f32>(clamp01(r), clamp01(g), clamp01(b), clamp01(a));
+}
+
+fn luminance(rgb: vec3<f32>) -> f32 {
+  return dot(rgb, vec3<f32>(0.299, 0.587, 0.114));
+}
+
+fn fractf(x: f32) -> f32 {
+  return x - floor(x);
+}
+
+fn mix1(a: f32, b: f32, t: f32) -> f32 {
+  return a * (1.0 - t) + b * t;
+}
+
+fn mix3(a: vec3<f32>, b: vec3<f32>, t: f32) -> vec3<f32> {
+  return a * (1.0 - t) + b * t;
+}
+
+fn smoothstep1(edge0: f32, edge1: f32, x: f32) -> f32 {
+  let denom = max(1e-6, edge1 - edge0);
+  let t = clamp((x - edge0) / denom, 0.0, 1.0);
+  return t * t * (3.0 - 2.0 * t);
+}
+
+fn hash21(p: vec2<f32>) -> f32 {
+  return fractf(sin(dot(p, vec2<f32>(127.1, 311.7))) * 43758.5453123);
+}
+
+fn noise2(p: vec2<f32>) -> f32 {
+  let i = floor(p);
+  let f = vec2<f32>(fractf(p.x), fractf(p.y));
+  let u = f * f * (vec2<f32>(3.0, 3.0) - 2.0 * f);
+  let a = hash21(i + vec2<f32>(0.0, 0.0));
+  let b = hash21(i + vec2<f32>(1.0, 0.0));
+  let c = hash21(i + vec2<f32>(0.0, 1.0));
+  let d = hash21(i + vec2<f32>(1.0, 1.0));
+  return mix1(mix1(a, b, u.x), mix1(c, d, u.x), u.y);
+}
+
+fn fbm(seed: vec2<f32>) -> f32 {
+  var p = seed;
+  var a = 0.5;
+  var v = 0.0;
+  for (var i: i32 = 0; i < 5; i = i + 1) {
+    v = v + a * noise2(p);
+    p = p * vec2<f32>(2.03, 2.01) + vec2<f32>(17.13, 8.73);
+    a = a * 0.5;
+  }
+  return v;
+}
+
+fn palette(t: f32) -> vec3<f32> {
+  return vec3<f32>(
+    0.5 + 0.5 * cos(6.2831853 * (t + 0.00)),
+    0.5 + 0.5 * cos(6.2831853 * (t + 0.33)),
+    0.5 + 0.5 * cos(6.2831853 * (t + 0.67))
+  );
+}
+
+fn unpackPixel(v: u32) -> vec4<f32> {
+  let r = f32(v & 0xffu) / 255.0;
+  let g = f32((v >> 8u) & 0xffu) / 255.0;
+  let b = f32((v >> 16u) & 0xffu) / 255.0;
+  let a = f32((v >> 24u) & 0xffu) / 255.0;
+  return vec4<f32>(r, g, b, a);
+}
+
+fn packPixel(v: vec4<f32>) -> u32 {
+  let c = vec4<u32>(round(clamp(v, vec4<f32>(0.0), vec4<f32>(1.0)) * 255.0));
+  return c.x | (c.y << 8u) | (c.z << 16u) | (c.w << 24u);
+}
+
+fn sampleAt(ix: i32, iy: i32) -> vec4<f32> {
+  let maxX = i32(params.width) - 1;
+  let maxY = i32(params.height) - 1;
+  let sx = u32(clamp(ix, 0, maxX));
+  let sy = u32(clamp(iy, 0, maxY));
+  let idx = sy * params.width + sx;
+  return unpackPixel(inputPixels[idx]);
+}
+
+fn sampleNorm(u: f32, v: f32) -> vec4<f32> {
+  let sx = i32(clamp(u, 0.0, 1.0) * max(1.0, f32(params.width - 1u)));
+  let sy = i32(clamp(v, 0.0, 1.0) * max(1.0, f32(params.height - 1u)));
+  return sampleAt(sx, sy);
+}
+
+fn studentKernel(x: u32, y: u32) -> vec4<f32> {
+  let uvx = f32(x) / max(1.0, f32(params.width - 1u));
+  let uvy = f32(y) / max(1.0, f32(params.height - 1u));
+  let cx = uvx * 2.0 - 1.0;
+  let cy = uvy * 2.0 - 1.0;
+  ${studentBody}
+}
+
+@compute @workgroup_size(${workgroupSizeX}, ${workgroupSizeY}, 1)
+fn main(@builtin(global_invocation_id) gid: vec3<u32>) {
+  let x = gid.x;
+  let y = gid.y;
+  if (x >= params.width || y >= params.height) {
+    return;
+  }
+  let idx = y * params.width + x;
+  outputPixels[idx] = packPixel(studentKernel(x, y));
+}
+    `;
+  }
+
+  async function processGpu(inputPixelsBytes, width, height) {
+    const device = await initWebGPU();
+    const packedInput = packPixelsToU32(inputPixelsBytes);
+    const bufferSize = packedInput.byteLength;
+    const uniformSize = 16;
+
+    const inputBuffer = device.createBuffer({
+      size: bufferSize,
+      usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
+    });
+    const outputBuffer = device.createBuffer({
+      size: bufferSize,
+      usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC,
+    });
+    const readbackBuffer = device.createBuffer({
+      size: bufferSize,
+      usage: GPUBufferUsage.COPY_DST | GPUBufferUsage.MAP_READ,
+    });
+    const uniformBuffer = device.createBuffer({
+      size: uniformSize,
+      usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+    });
+
+    const shaderCode = buildShader(gpuCodeEl.value);
+    const shaderModule = device.createShaderModule({ code: shaderCode });
+    if (typeof shaderModule.getCompilationInfo === 'function') {
+      const info = await shaderModule.getCompilationInfo();
+      const errors = info.messages.filter((m) => m.type === 'error');
+      if (errors.length > 0) {
+        const msg = errors.map((m) => `${m.lineNum}:${m.linePos} ${m.message}`).join('\n');
+        throw new Error('WGSL compilation error:\n' + msg);
+      }
+    }
+
+    const bindGroupLayout = device.createBindGroupLayout({
+      entries: [
+        { binding: 0, visibility: GPUShaderStage.COMPUTE, buffer: { type: 'read-only-storage' } },
+        { binding: 1, visibility: GPUShaderStage.COMPUTE, buffer: { type: 'storage' } },
+        { binding: 2, visibility: GPUShaderStage.COMPUTE, buffer: { type: 'uniform' } },
+      ],
+    });
+    const pipelineLayout = device.createPipelineLayout({
+      bindGroupLayouts: [bindGroupLayout],
+    });
+    const pipeline = device.createComputePipeline({
+      layout: pipelineLayout,
+      compute: { module: shaderModule, entryPoint: 'main' },
+    });
+    const uniformData = new ArrayBuffer(uniformSize);
+    const u32 = new Uint32Array(uniformData);
+    u32[0] = width;
+    u32[1] = height;
+
+    device.queue.writeBuffer(inputBuffer, 0, packedInput.buffer, packedInput.byteOffset, packedInput.byteLength);
+    device.queue.writeBuffer(uniformBuffer, 0, uniformData);
+
+    const bindGroup = device.createBindGroup({
+      layout: bindGroupLayout,
+      entries: [
+        { binding: 0, resource: { buffer: inputBuffer } },
+        { binding: 1, resource: { buffer: outputBuffer } },
+        { binding: 2, resource: { buffer: uniformBuffer } },
+      ],
+    });
+
+    const encoder = device.createCommandEncoder();
+    const pass = encoder.beginComputePass();
+    pass.setPipeline(pipeline);
+    pass.setBindGroup(0, bindGroup);
+    pass.dispatchWorkgroups(Math.ceil(width / workgroupSizeX), Math.ceil(height / workgroupSizeY));
+    pass.end();
+    encoder.copyBufferToBuffer(outputBuffer, 0, readbackBuffer, 0, bufferSize);
+
+    const t0 = performance.now();
+    device.queue.submit([encoder.finish()]);
+    await device.queue.onSubmittedWorkDone();
+    await readbackBuffer.mapAsync(GPUMapMode.READ);
+    const rawCopy = readbackBuffer.getMappedRange().slice(0);
+    const t1 = performance.now();
+
+    const packedOutput = new Uint32Array(rawCopy);
+    const pixels = unpackU32ToPixels(packedOutput);
+    readbackBuffer.unmap();
+
+    inputBuffer.destroy();
+    outputBuffer.destroy();
+    readbackBuffer.destroy();
+    uniformBuffer.destroy();
+
+    return { output: pixels, timeMs: t1 - t0 };
+  }
+  async function renderResult(ctx, infoEl, pixels, width, height, label) {
+    renderPixelsPreview(ctx, pixels, width, height);
+    infoEl.textContent = `${label}: ${width} × ${height}`;
+  }
+
+  async function runCpu() {
+    if (!sourcePixels) {
+      alert('Сначала сгенерируйте demo-источник или загрузите изображение.');
+      return;
+    }
+    if (!cpuCodeEl.value.trim()) {
+      alert('Введите код CPU в редакторе.');
+      return;
+    }
+    clearMetrics();
+    const t0 = performance.now();
+    const output = processCpu(sourcePixels, sourceWidth, sourceHeight);
+    const t1 = performance.now();
+    lastCpuPixels = output;
+    await renderResult(cpuCtx, cpuInfoEl, output, sourceWidth, sourceHeight, 'CPU-результат');
+    const time = t1 - t0;
+    cpuTimeEl.textContent = `${time.toFixed(3)} ms`;
+    cpuTimeEl.dataset.value = String(time);
+    updateSpeedup();
+    log(`CPU завершён: ${time.toFixed(3)} ms`);
+  }
+
+  async function runGpu() {
+    if (!sourcePixels) {
+      alert('Сначала сгенерируйте demo-источник или загрузите изображение.');
+      return;
+    }
+    if (!gpuCodeEl.value.trim()) {
+      alert('Введите код GPU в редакторе.');
+      return;
+    }
+    clearMetrics();
+    try {
+      const result = await processGpu(sourcePixels, sourceWidth, sourceHeight);
+      lastGpuPixels = result.output;
+      await renderResult(gpuCtx, gpuInfoEl, result.output, sourceWidth, sourceHeight, 'GPU-результат');
+      gpuTimeEl.textContent = `${result.timeMs.toFixed(3)} ms`;
+      gpuTimeEl.dataset.value = String(result.timeMs);
+      updateSpeedup();
+      log(`GPU завершён: ${result.timeMs.toFixed(3)} ms`);
+    } catch (err) {
+      log('Ошибка GPU: ' + err.message);
+      alert('Ошибка GPU: ' + err.message);
+    }
+  }
+
+  async function runBoth() {
+    if (!sourcePixels) {
+      alert('Сначала сгенерируйте demo-источник или загрузите изображение.');
+      return;
+    }
+    if (!cpuCodeEl.value.trim() || !gpuCodeEl.value.trim()) {
+      alert('Введите код CPU и GPU в редакторах.');
+      return;
+    }
+    clearMetrics();
+
+    try {
+      const t0 = performance.now();
+      lastCpuPixels = processCpu(sourcePixels, sourceWidth, sourceHeight);
+      const t1 = performance.now();
+      await renderResult(cpuCtx, cpuInfoEl, lastCpuPixels, sourceWidth, sourceHeight, 'CPU-результат');
+      const cpuMs = t1 - t0;
+      cpuTimeEl.textContent = `${cpuMs.toFixed(3)} ms`;
+      cpuTimeEl.dataset.value = String(cpuMs);
+      log(`CPU завершён: ${cpuMs.toFixed(3)} ms`);
+    } catch (err) {
+      log('Ошибка CPU: ' + err.message);
+      alert('Ошибка CPU: ' + err.message);
+      return;
+    }
+
+    try {
+      const gpuResult = await processGpu(sourcePixels, sourceWidth, sourceHeight);
+      lastGpuPixels = gpuResult.output;
+      await renderResult(gpuCtx, gpuInfoEl, lastGpuPixels, sourceWidth, sourceHeight, 'GPU-результат');
+      gpuTimeEl.textContent = `${gpuResult.timeMs.toFixed(3)} ms`;
+      gpuTimeEl.dataset.value = String(gpuResult.timeMs);
+      log(`GPU завершён: ${gpuResult.timeMs.toFixed(3)} ms`);
+    } catch (err) {
+      log('Ошибка GPU: ' + err.message);
+      alert('Ошибка GPU: ' + err.message);
+
+      return;
+    }
+
+    updateSpeedup();
+    compareOutputs(lastCpuPixels, lastGpuPixels);
+  }
+
+  async function generateDemoImage() {
+    const { width, height } = getRequestedResolution();
+    const pixels = createDemoImage(width, height);
+    setSourceImage(pixels, width, height);
+    cpuCodeEl.value = demoCpuCode;
+    gpuCodeEl.value = demoGpuCode;
+    log(`Сгенерирован demo-источник ${width} × ${height} и загружен demo-код (CPU/GPU: grayscale).`);
+  }
+
+  function prepareInitialSource() {
+    const { width, height } = getRequestedResolution();
+    const pixels = createDemoImage(width, height);
+    setSourceImage(pixels, width, height);
+  }
+
+  async function showSupportInfo() {
+    if (!navigator.gpu) {
+      supportInfo.textContent = 'WebGPU не обнаружен. GPU-часть не будет доступна. Используйте актуальный браузер с поддержкой WebGPU и запускайте страницу через localhost.';
+      return;
+    }
+    try {
+      const adapter = await navigator.gpu.requestAdapter();
+      if (!adapter) {
+        supportInfo.textContent = 'navigator.gpu есть, но получить GPUAdapter не удалось.';
+        return;
+      }
+      supportInfo.textContent = `WebGPU обнаружен. Workgroup в шаблоне: ${workgroupSizeX} × ${workgroupSizeY}. Для 4K и особенно 8K учитывайте рост нагрузки на память.`;
+    } catch (err) {
+      supportInfo.textContent = 'Ошибка при проверке WebGPU: ' + err.message;
+    }
+  }
+
+  imageInput.addEventListener('change', async (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    try {
+      const { width: targetWidth, height: targetHeight } = getRequestedResolution();
+      const bitmap = await createImageBitmap(file);
+      const canvas = document.createElement('canvas');
+      canvas.width = targetWidth;
+      canvas.height = targetHeight;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(bitmap, 0, 0, targetWidth, targetHeight);
+      const data = ctx.getImageData(0, 0, targetWidth, targetHeight).data;
+      setSourceImage(new Uint8ClampedArray(data), targetWidth, targetHeight);
+      log(`Загружено изображение ${bitmap.width} × ${bitmap.height}, приведено к ${targetWidth} × ${targetHeight}`);
+      bitmap.close();
+    } catch (err) {
+      log('Ошибка загрузки изображения: ' + err.message);
+      alert('Ошибка загрузки изображения: ' + err.message);
+    }
+  });
+
+  document.getElementById('generateBtn').addEventListener('click', generateDemoImage);
+  clearBtn.addEventListener('click', clearWorkspace);
+  document.getElementById('cpuBtn').addEventListener('click', runCpu);
+  document.getElementById('gpuBtn').addEventListener('click', runGpu);
+  document.getElementById('bothBtn').addEventListener('click', runBoth);
+  resolutionWidthEl.addEventListener('change', () => {
+    try {
+      applyRequestedResolutionToCurrentSource();
+    } catch (err) {
+      alert(err.message);
+    }
+  });
+  resolutionHeightEl.addEventListener('change', () => {
+    try {
+      applyRequestedResolutionToCurrentSource();
+    } catch (err) {
+      alert(err.message);
+    }
+  });
+
+  showSupportInfo();
+  prepareInitialSource();
+  log('Страница готова. Пишите код сразу или нажмите "Сгенерировать demo-источник".');
+  </script>
+</body>
+</html>

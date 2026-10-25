@@ -1,0 +1,3 @@
+{"inputs": ["sel", "rs1_val"],
+ "outputs": ["opcode", "rd", "funct3", "rs1", "rs2", "funct7", "imm12", "is_addi", "result"],
+ "vectors": [[0, 0], [1, 0], [2, 69868], [3, 0], [4, 0], [5, 0], [6, 0], [7, 0]]}

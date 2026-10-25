@@ -1,0 +1,42 @@
+ashot@linux:~/Documents/arhitectures-mirea/pr09/src/task1$ rm -f uppertst && make CC="riscv64-linux-gnu-gcc -g"
+riscv64-linux-gnu-gcc -g -o uppertst uppertst.c upper.S
+ashot@linux:~/Documents/arhitectures-mirea/pr09/src/task1$ qemu-riscv64 -g 1235 ./uppertst &
+ashot@linux:~/Documents/arhitectures-mirea/pr09/src/task1$ gdb-multiarch -q -nx -batch -x gdb_lb.gdb ./uppertst
+(gdb) set pagination off
+(gdb) set debuginfod enabled off
+(gdb) set sysroot ../../../.tools/root/usr/riscv64-linux-gnu
+(gdb) target remote :1235
+warning: BFD: warning: system-supplied DSO at 0x2aaaab2d2000 has a corrupt string table index
+0x00002aaaab2bcf58 in ?? () from ../../../.tools/root/usr/riscv64-linux-gnu/lib/ld-linux-riscv64-lp64d.so.1
+(gdb) break mytoupper
+Breakpoint 1 at 0x555555556806: file upper.S, line 17.
+(gdb) continue
+
+Breakpoint 1, mytoupper () at upper.S:17
+17	      addi sp, sp, -16     # allocate 16 bytes on stack
+(gdb) x/s $a0
+0x555555556848:	"мирзоян_а_о_икбо_41_25_вариант_14"
+(gdb) x/4xb $a0
+0x555555556848:	0xd0	0xbc	0xd0	0xb8
+(gdb) stepi 5
+23	      addi a0, a0, 1       # increment buffer pointer
+(gdb) x/i $pc
+=> 0x555555556812 <loop+4>:	addi	a0,a0,1
+(gdb) info registers t2
+t2             0xffffffffffffffd0	-48
+(gdb) stepi 3
+28	      li   t3, 'a'         # load 'a' for comparison
+(gdb) x/2i $pc
+=> 0x55555555681c <loop+14>:	li	t3,97
+   0x555555556820 <loop+18>:	blt	t2,t3,0x555555556826 <cont>
+(gdb) stepi 2
+cont () at upper.S:33
+33	      sb   t2, 0(a1)       # store character to output str
+(gdb) info registers t2 pc
+t2             0xffffffffffffffd0	-48
+pc             0x555555556826	0x555555556826 <cont>
+(gdb) x/i $pc
+=> 0x555555556826 <cont>:	sb	t2,0(a1)
+(gdb) kill
+Kill the program being debugged? (y or n) [answered Y; input not from terminal]
+[Inferior 1 (process 1557475) killed]
