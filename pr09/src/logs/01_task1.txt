@@ -1,0 +1,16 @@
+ashot@linux:~/Documents/arhitectures-mirea/pr09/src/task1$ riscv64-linux-gnu-gcc -o uppertst uppertst.c upper_listing.S
+~/Documents/arhitectures-mirea/.tools/root/usr/bin/../lib/gcc-cross/riscv64-linux-gnu/13/../../../../riscv64-linux-gnu/bin/ld: /tmp/ccMU0lsb.o: in function `main':
+uppertst.c:(.text+0x2e): undefined reference to `mytoupper'
+collect2: error: ld returned 1 exit status
+ashot@linux:~/Documents/arhitectures-mirea/pr09/src/task1$ make
+riscv64-linux-gnu-gcc -o uppertst uppertst.c upper.S
+ashot@linux:~/Documents/arhitectures-mirea/pr09/src/task1$ file uppertst | sed 's/, BuildID.*//'
+uppertst: ELF 64-bit LSB pie executable, UCB RISC-V, RVC, double-float ABI, version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-riscv64-lp64d.so.1
+ashot@linux:~/Documents/arhitectures-mirea/pr09/src/task1$ make run
+qemu-riscv64 ./uppertst
+Before str: мирзоян_а_о_икбо_41_25_вариант_14
+After str: мирзоян_а_о_икбо_41_25_вариант_14
+Str len = 54
+ashot@linux:~/Documents/arhitectures-mirea/pr09/src/task1$ printf 'мирзоян_41' | xxd
+00000000: d0bc d0b8 d180 d0b7 d0be d18f d0bd 5f34  .............._4
+00000010: 31                                       1

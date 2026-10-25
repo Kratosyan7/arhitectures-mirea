@@ -1,0 +1,9 @@
+исх: S-шина=EBC Управляющее слово=C0 | AC=F23F Flags=0 IR=0 InpR=0 MAR=0 MDR=0 OutR=0 PC=EBC Счётчик тактов=0
+C0t0: S-шина=EBC Управляющее слово=B8 | AC=F23F Flags=0 IR=0 InpR=0 MAR=EBC MDR=0 OutR=0 PC=EBC Счётчик тактов=1
+C0t1: S-шина=DFFF Управляющее слово=800D0 | AC=F23F Flags=0 IR=0 InpR=0 MAR=EBC MDR=DFFF OutR=0 PC=EBC Счётчик тактов=2
+C0t2: S-шина=EBD Управляющее слово=1F2 | AC=F23F Flags=2 IR=DFFF InpR=0 MAR=EBC MDR=DFFF OutR=0 PC=EBC Счётчик тактов=3
+C0t3: S-шина=F240 Управляющее слово=201E2 | AC=F23F Flags=0 IR=DFFF InpR=0 MAR=EBC MDR=DFFF OutR=0 PC=EBD Счётчик тактов=0
+C2t0: S-шина=EBD Управляющее слово=2 | AC=F240 Flags=2 IR=DFFF InpR=0 MAR=EBC MDR=DFFF OutR=0 PC=EBD Счётчик тактов=1
+C2t1: S-шина=EBD Управляющее слово=2 | AC=F240 Flags=2 IR=DFFF InpR=0 MAR=EBC MDR=DFFF OutR=0 PC=EBD Счётчик тактов=2
+C2t2: S-шина=EBD Управляющее слово=0 | AC=F240 Flags=2 IR=DFFF InpR=0 MAR=EBC MDR=DFFF OutR=0 PC=EBD Счётчик тактов=3
+C2t3: S-шина=EBD Управляющее слово=C0 | AC=F240 Flags=2 IR=DFFF InpR=0 MAR=EBC MDR=DFFF OutR=0 PC=EBD Счётчик тактов=0

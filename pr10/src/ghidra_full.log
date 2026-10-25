@@ -1,0 +1,167 @@
+openjdk version "21.0.13" 2026-10-20 LTS
+OpenJDK Runtime Environment Temurin-21.0.13+9 (build 21.0.13+9-LTS)
+OpenJDK 64-Bit Server VM Temurin-21.0.13+9 (build 21.0.13+9-LTS, mixed mode)
+INFO  Using log config file: jar:file:/home/ashot/Documents/arhitectures-mirea/.tools/ghidra/ghidra_11.4.2_PUBLIC/Ghidra/Framework/Generic/lib/Generic.jar!/generic.log4j.xml (LoggingInitialization)  
+INFO  Using log file: /home/ashot/.config/ghidra/ghidra_11.4.2_PUBLIC/application.log (LoggingInitialization)  
+INFO  Loading user preferences: /home/ashot/.config/ghidra/ghidra_11.4.2_PUBLIC/preferences (Preferences)  
+INFO  Searching for classes... (ClassSearcher)  
+INFO  Class search complete (1823 ms) (ClassSearcher)  
+INFO  Initializing SSL Context (SSLContextInitializer)  
+INFO  Initializing Random Number Generator... (SecureRandomFactory)  
+INFO  Random Number Generator initialization complete: NativePRNGNonBlocking (SecureRandomFactory)  
+INFO  Trust manager disabled, cacerts have not been set (ApplicationTrustManagerFactory)  
+INFO  Headless startup complete (3595 ms) (AnalyzeHeadless)  
+INFO  Class searcher loaded 58 extension points (18 false positives) (ClassSearcher)  
+INFO  HEADLESS Script Paths:
+    /home/ashot/Documents/arhitectures-mirea/.tools/ghidra/ghidra_11.4.2_PUBLIC/Ghidra/Features/BytePatterns/ghidra_scripts
+    /home/ashot/Documents/arhitectures-mirea/.tools/ghidra/ghidra_11.4.2_PUBLIC/Ghidra/Processors/PIC/ghidra_scripts
+    /home/ashot/Documents/arhitectures-mirea/.tools/ghidra/ghidra_11.4.2_PUBLIC/Ghidra/Debug/Debugger-rmi-trace/ghidra_scripts
+    /home/ashot/Documents/arhitectures-mirea/.tools/ghidra/ghidra_11.4.2_PUBLIC/Ghidra/Features/FileFormats/ghidra_scripts
+    /home/ashot/Documents/arhitectures-mirea/pr10/src/ghidra
+    /home/ashot/Documents/arhitectures-mirea/.tools/ghidra/ghidra_11.4.2_PUBLIC/Ghidra/Features/SystemEmulation/ghidra_scripts
+    /home/ashot/Documents/arhitectures-mirea/.tools/ghidra/ghidra_11.4.2_PUBLIC/Ghidra/Features/MicrosoftCodeAnalyzer/ghidra_scripts
+    /home/ashot/Documents/arhitectures-mirea/.tools/ghidra/ghidra_11.4.2_PUBLIC/Ghidra/Debug/Debugger/ghidra_scripts
+    /home/ashot/Documents/arhitectures-mirea/.tools/ghidra/ghidra_11.4.2_PUBLIC/Ghidra/Features/Decompiler/ghidra_scripts
+    /home/ashot/Documents/arhitectures-mirea/.tools/ghidra/ghidra_11.4.2_PUBLIC/Ghidra/Processors/Atmel/ghidra_scripts
+    /home/ashot/Documents/arhitectures-mirea/.tools/ghidra/ghidra_11.4.2_PUBLIC/Ghidra/Features/GnuDemangler/ghidra_scripts
+    /home/ashot/Documents/arhitectures-mirea/.tools/ghidra/ghidra_11.4.2_PUBLIC/Ghidra/Features/BSim/ghidra_scripts
+    /home/ashot/Documents/arhitectures-mirea/.tools/ghidra/ghidra_11.4.2_PUBLIC/Ghidra/Features/PyGhidra/ghidra_scripts
+    /home/ashot/Documents/arhitectures-mirea/.tools/ghidra/ghidra_11.4.2_PUBLIC/Ghidra/Features/DecompilerDependent/ghidra_scripts
+    /home/ashot/Documents/arhitectures-mirea/.tools/ghidra/ghidra_11.4.2_PUBLIC/Ghidra/Processors/JVM/ghidra_scripts
+    /home/ashot/Documents/arhitectures-mirea/.tools/ghidra/ghidra_11.4.2_PUBLIC/Ghidra/Processors/8051/ghidra_scripts
+    /home/ashot/Documents/arhitectures-mirea/.tools/ghidra/ghidra_11.4.2_PUBLIC/Ghidra/Features/VersionTracking/ghidra_scripts
+    /home/ashot/Documents/arhitectures-mirea/.tools/ghidra/ghidra_11.4.2_PUBLIC/Ghidra/Features/FunctionID/ghidra_scripts
+    /home/ashot/Documents/arhitectures-mirea/.tools/ghidra/ghidra_11.4.2_PUBLIC/Ghidra/Features/WildcardAssembler/ghidra_scripts
+    /home/ashot/Documents/arhitectures-mirea/.tools/ghidra/ghidra_11.4.2_PUBLIC/Ghidra/Processors/DATA/ghidra_scripts
+    /home/ashot/Documents/arhitectures-mirea/.tools/ghidra/ghidra_11.4.2_PUBLIC/Ghidra/Features/PDB/ghidra_scripts
+    /home/ashot/Documents/arhitectures-mirea/.tools/ghidra/ghidra_11.4.2_PUBLIC/Ghidra/Features/Jython/ghidra_scripts
+    /home/ashot/Documents/arhitectures-mirea/.tools/ghidra/ghidra_11.4.2_PUBLIC/Ghidra/Features/Base/ghidra_scripts
+    /home/ashot/Documents/arhitectures-mirea/.tools/ghidra/ghidra_11.4.2_PUBLIC/Ghidra/Features/SwiftDemangler/ghidra_scripts (HeadlessAnalyzer)  
+INFO  HEADLESS: execution starts (HeadlessAnalyzer)  
+INFO  Creating temporary project: /home/ashot/Documents/arhitectures-mirea/.tools/ghidra_proj/pr10 (HeadlessAnalyzer)  
+INFO  Creating project: /home/ashot/Documents/arhitectures-mirea/.tools/ghidra_proj/pr10 (DefaultProject)  
+INFO  REPORT: Processing input files:  (HeadlessAnalyzer)  
+INFO       project: /home/ashot/Documents/arhitectures-mirea/.tools/ghidra_proj/pr10 (HeadlessAnalyzer)  
+INFO  IMPORTING: file:///home/ashot/Documents/arhitectures-mirea/pr10/src/tolower_O2 (HeadlessAnalyzer)  
+INFO  Using Loader: Executable and Linking Format (ELF) (AutoImporter)  
+INFO  Using Language/Compiler: RISCV:LE:64:RV64GC:gcc (AutoImporter)  
+INFO  Using Library Search Path: [., /bin, /lib, /lib64, /lib/x86_64-linux-gnu, /lib/aarch64-linux-gnu, /usr/bin, /usr/lib, /usr/X11R6/bin, /usr/X11R6/lib, /home/ashot/Documents/arhitectures-mirea/.tools/root/usr/lib/x86_64-linux-gnu, /usr/java/packages/lib, /usr/lib64] (AutoImporter)  
+INFO  Additional info:
+Loading file:///home/ashot/Documents/arhitectures-mirea/pr10/src/tolower_O2?MD5=5a3fe6a39030cc0f4aee755f13593e2e...
+Skipping segment[0, null] included by section .bss
+Unsupported Thread-Local Symbol not loaded: thread_arena
+Unsupported Thread-Local Symbol not loaded: tcache
+Unsupported Thread-Local Symbol not loaded: tcache_shutting_down
+Unsupported Thread-Local Symbol not loaded: _nl_current_LC_CTYPE
+Unsupported Thread-Local Symbol not loaded: __libc_errno
+Unsupported Thread-Local Symbol not loaded: _nl_current_LC_NUMERIC
+Unsupported Thread-Local Symbol not loaded: __libc_dlerror_result
+Unsupported Thread-Local Symbol not loaded: errno
+Unsupported Thread-Local Symbol not loaded: __libc_tsd_CTYPE_TOLOWER
+Unsupported Thread-Local Symbol not loaded: __libc_tsd_CTYPE_B
+Unsupported Thread-Local Symbol not loaded: __libc_tsd_LOCALE
+Unsupported Thread-Local Symbol not loaded: __libc_tsd_CTYPE_TOUPPER
+Setting block .tdata to read-only
+Setting block .preinit_array to read-only
+Setting block .init_array to read-only
+Setting block .fini_array to read-only
+Setting block .data.rel.ro to read-only
+------------------------------------------------
+
+ (AutoImporter)  
+INFO  IMPORTING: Loaded 0 additional files (HeadlessAnalyzer)  
+INFO  ANALYZING all memory and code: file:///home/ashot/Documents/arhitectures-mirea/pr10/src/tolower_O2 (HeadlessAnalyzer)  
+INFO  DWARF external debug information found: ExternalDebugInfo [filename=null, crc=0, hash=b586af04e5b58155785152b248317889c626a43b] (ExternalDebugFileSectionProvider)  
+INFO  Unable to find DWARF information, skipping DWARF analysis (DWARFAnalyzer)  
+WARN  Decompiling 000563ba, pcode error at 000567fc: Could not follow disassembly flow into non-existing memory at 000567fc (DecompileCallback)  
+WARN  Decompiling 0001b100, pcode error at 0005abc8: Unable to resolve constructor at 0005abc8 (DecompileCallback)  
+WARN  Decompiling 0001b100, pcode error at 0005b28c: Unable to resolve constructor at 0005b28c (DecompileCallback)  
+WARN  Decompiling 0001b100, pcode error at 0005b2f4: Unable to resolve constructor at 0005b2f4 (DecompileCallback)  
+WARN  Decompiling 0001b100, pcode error at 0005eed8: Unable to resolve constructor at 0005eed8 (DecompileCallback)  
+WARN  Decompiling 0001b100, pcode error at 0012d230: Could not follow disassembly flow into non-existing memory at 0012d230 (DecompileCallback)  
+WARN  Decompiling 0001b100, pcode error at 0005abfe: Unable to resolve constructor at 0005abfe (DecompileCallback)  
+WARN  Decompiling 0001b100, pcode error at 00152948: Could not follow disassembly flow into non-existing memory at 00152948 (DecompileCallback)  
+WARN  Decompiling 0001b100, pcode error at 00085678: Unable to resolve constructor at 00085678 (DecompileCallback)  
+INFO  Packed database cache: /var/tmp/ashot-ghidra/packed-db-cache (PackedDatabaseCache)  
+INFO  Multiple function definitions for __sigsetjmp at 00010cd0 found.  No function signature applied. (ApplyFunctionDataTypesCmd)  
+INFO  Applied data type archive: generic_clib_64 (ApplyDataArchiveAnalyzer)  
+INFO  Applied data type archive: generic_clib_64 (ApplyDataArchiveAnalyzer)  
+INFO  -----------------------------------------------------
+    ASCII Strings                              0.776 secs
+    Apply Data Archives                        1.604 secs
+    Call Convention ID                         4.141 secs
+    Call-Fixup Installer                       0.179 secs
+    Create Address Tables                      0.247 secs
+    Create Address Tables - One Time           0.159 secs
+    Create Function                            0.004 secs
+    DWARF                                      0.009 secs
+    Data Reference                             0.269 secs
+    Decompiler Switch Analysis                48.730 secs
+    Demangler GNU                              0.206 secs
+    Disassemble Entry Points                   3.887 secs
+    Disassemble Entry Points - One Time        0.004 secs
+    Embedded Media                             0.041 secs
+    External Entry References                  0.015 secs
+    Function Start Search                      0.038 secs
+    GCC Exception Handlers                     1.221 secs
+    Non-Returning Functions - Discovered       0.034 secs
+    Non-Returning Functions - Known            0.016 secs
+    RISCV Constant Reference Analyzer          6.365 secs
+    Reference                                  0.414 secs
+    Shared Return Calls                        0.231 secs
+    Stack                                      4.253 secs
+    Subroutine References                      0.049 secs
+    Subroutine References - One Time           0.000 secs
+-----------------------------------------------------
+     Total Time   72 secs
+-----------------------------------------------------
+ (AutoAnalysisManager)  
+INFO  REPORT: Analysis succeeded for file: file:///home/ashot/Documents/arhitectures-mirea/pr10/src/tolower_O2 (HeadlessAnalyzer)  
+INFO  SCRIPT: /home/ashot/Documents/arhitectures-mirea/pr10/src/ghidra/DecompileFn.py (HeadlessAnalyzer)  
+
+==================== DECOMPILED: my_tolower ====================
+
+long my_tolower(char *param_1,char *param_2)
+
+{
+  char *pcVar1;
+  char cVar2;
+  int iVar3;
+  
+  iVar3 = (int)param_2;
+  gp = &__global_pointer_;
+  while( true ) {
+    cVar2 = *param_1;
+    while ((byte)(cVar2 + 0xbfU) < 0x1a) {
+      *param_2 = cVar2 + ' ';
+      pcVar1 = param_1 + 1;
+      param_2 = param_2 + 1;
+      param_1 = param_1 + 1;
+      cVar2 = *pcVar1;
+    }
+    *param_2 = cVar2;
+    param_2 = param_2 + 1;
+    if (cVar2 == '\0') break;
+    param_1 = param_1 + 1;
+  }
+  return (long)((int)param_2 - iVar3);
+}
+
+
+
+==================== DECOMPILED: main ====================
+
+undefined8 main(void)
+
+{
+  gp = &__global_pointer_;
+  my_tolower(tstStr,outStr);
+  ___printf_chk(2,"Input:  %s\nOutput: %s\n",tstStr,outStr);
+  return 0;
+}
+
+
+INFO  ANALYZING changes made by post scripts: file:///home/ashot/Documents/arhitectures-mirea/pr10/src/tolower_O2 (HeadlessAnalyzer)  
+INFO  REPORT: Post-analysis succeeded for file: file:///home/ashot/Documents/arhitectures-mirea/pr10/src/tolower_O2 (HeadlessAnalyzer)  
+INFO  REPORT: Save succeeded for: /tolower_O2 (pr10:/tolower_O2) (HeadlessAnalyzer)  
+INFO  REPORT: Import succeeded (HeadlessAnalyzer)  

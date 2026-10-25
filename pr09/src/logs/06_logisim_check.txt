@@ -1,0 +1,27 @@
+ashot@linux:~/Documents/arhitectures-mirea/pr09/src/logisim$ python3 gen_toupper.py
+toupper.circ written
+ashot@linux:~/Documents/arhitectures-mirea/pr09/src/logisim$ java -jar ../../../.tools/logisim/logisim.jar toupper.circ -tty stats | tail -1
+26	26	TOTAL (with subcircuits)
+ashot@linux:~/Documents/arhitectures-mirea/pr09/src/logisim$ jjs -J-Djava.awt.headless=true -cp ../../../.tools/logisim/logisim.jar check.js -- toupper.circ vectors_edges.json
+c	|	is_lower	out
+6d	|	1	4d
+61	|	1	41
+7a	|	1	5a
+60	|	0	60
+7b	|	0	7b
+5f	|	0	5f
+34	|	0	34
+41	|	0	41
+d0	|	0	d0
+bc	|	0	bc
+d1	|	0	d1
+80	|	0	80
+00	|	0	00
+ashot@linux:~/Documents/arhitectures-mirea/pr09/src/logisim$ jjs -J-Djava.awt.headless=true -cp ../../../.tools/logisim/logisim.jar check.js -- toupper.circ vectors_str_test.json | python3 bytes2str.py
+вход : This is a test.
+выход: THIS IS A TEST.
+изменено байт: 10 из 15
+ashot@linux:~/Documents/arhitectures-mirea/pr09/src/logisim$ jjs -J-Djava.awt.headless=true -cp ../../../.tools/logisim/logisim.jar check.js -- toupper.circ vectors_str_v14.json | python3 bytes2str.py
+вход : мирзоян_а_о_икбо_41_25_вариант_14
+выход: мирзоян_а_о_икбо_41_25_вариант_14
+изменено байт: 0 из 53

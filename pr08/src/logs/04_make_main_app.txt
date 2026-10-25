@@ -1,0 +1,41 @@
+ashot@linux:~/Documents/arhitectures-mirea/pr08/src/main_app$ make clean
+rm -f *.o main_app main_app_debug
+ashot@linux:~/Documents/arhitectures-mirea/pr08/src/main_app$ riscv64-linux-gnu-as main_app.S -o test.o && riscv64-linux-gnu-ld -o test test.o; rm -f test test.o
+riscv64-linux-gnu-ld: warning: cannot find entry symbol _start; defaulting to 00000000000100e8
+ashot@linux:~/Documents/arhitectures-mirea/pr08/src/main_app$ make release
+riscv64-linux-gnu-as main_app.S -o main_app.o
+riscv64-linux-gnu-ld -e main_app -o main_app main_app.o
+riscv64-linux-gnu-strip main_app
+ashot@linux:~/Documents/arhitectures-mirea/pr08/src/main_app$ make debug
+riscv64-linux-gnu-as -g main_app.S -o main_app_debug.o
+riscv64-linux-gnu-ld -e main_app -o main_app_debug main_app_debug.o
+ashot@linux:~/Documents/arhitectures-mirea/pr08/src/main_app$ ls -l main_app main_app_debug
+-rwxrwxr-x 1 ashot ashot  720 Oct 25 13:37 main_app
+-rwxrwxr-x 1 ashot ashot 2192 Oct 25 13:37 main_app_debug
+ashot@linux:~/Documents/arhitectures-mirea/pr08/src/main_app$ riscv64-linux-gnu-readelf -h main_app | grep Entry; riscv64-linux-gnu-nm main_app_debug
+  Entry point address:               0x100e8
+0000000000011130 D __BSS_END__
+000000000001112c D __bss_start
+0000000000011104 D __DATA_BEGIN__
+000000000001112c D _edata
+0000000000011130 D _end
+0000000000011904 A __global_pointer$
+0000000000011104 d helloworld
+00000000000100e8 T main_app
+000000000001112c D __SDATA_BEGIN__
+ashot@linux:~/Documents/arhitectures-mirea/pr08/src/main_app$ make run-head N=5
+timeout 2 qemu-riscv64 ./main_app | head -n 5
+Мирзоян А.О._ИКБО-41-25_14
+Мирзоян А.О._ИКБО-41-25_14
+Мирзоян А.О._ИКБО-41-25_14
+Мирзоян А.О._ИКБО-41-25_14
+Мирзоян А.О._ИКБО-41-25_14
+ashot@linux:~/Documents/arhitectures-mirea/pr08/src/main_app$ riscv64-linux-gnu-objdump -d main_app_debug | tail -8
+00000000000100e8 <main_app>:
+   100e8:	00100513          	li	a0,1
+   100ec:	00001597          	auipc	a1,0x1
+   100f0:	01858593          	addi	a1,a1,24 # 11104 <__DATA_BEGIN__>
+   100f4:	02800613          	li	a2,40
+   100f8:	04000893          	li	a7,64
+   100fc:	00000073          	ecall
+   10100:	fe9ff06f          	j	100e8 <main_app>

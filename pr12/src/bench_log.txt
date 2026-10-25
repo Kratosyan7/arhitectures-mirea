@@ -1,0 +1,37 @@
+ashot@linux:~/pr12/src$ python bench.py results
+adapter: {'vendor': 'nvidia', 'architecture': 'ampere', 'ua': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36', 'cores': 28}
+640x360 run 0: cpu=175.4 ms gpu=35.50 ms mean=0.645 max=255 diffpx=2.171%
+640x360 run 1: cpu=130.5 ms gpu=7.50 ms mean=0.645 max=255 diffpx=2.171%
+640x360 run 2: cpu=110.0 ms gpu=4.80 ms mean=0.645 max=255 diffpx=2.171%
+640x360 run 3: cpu=109.5 ms gpu=4.90 ms mean=0.645 max=255 diffpx=2.171%
+640x360 run 4: cpu=109.9 ms gpu=5.00 ms mean=0.645 max=255 diffpx=2.171%
+640x360 run 5: cpu=110.1 ms gpu=5.00 ms mean=0.645 max=255 diffpx=2.171%
+1280x720 run 0: cpu=483.1 ms gpu=23.30 ms mean=0.647 max=255 diffpx=2.171%
+1280x720 run 1: cpu=465.7 ms gpu=32.50 ms mean=0.647 max=255 diffpx=2.171%
+1280x720 run 2: cpu=460.9 ms gpu=10.20 ms mean=0.647 max=255 diffpx=2.171%
+1280x720 run 3: cpu=503.8 ms gpu=8.00 ms mean=0.647 max=255 diffpx=2.171%
+1280x720 run 4: cpu=442.3 ms gpu=12.70 ms mean=0.647 max=255 diffpx=2.171%
+1280x720 run 5: cpu=436.3 ms gpu=19.80 ms mean=0.647 max=255 diffpx=2.171%
+1920x1080 run 0: cpu=980.3 ms gpu=64.70 ms mean=0.657 max=255 diffpx=2.223%
+1920x1080 run 1: cpu=967.9 ms gpu=51.10 ms mean=0.657 max=255 diffpx=2.223%
+1920x1080 run 2: cpu=969.7 ms gpu=43.30 ms mean=0.657 max=255 diffpx=2.223%
+1920x1080 run 3: cpu=1003.8 ms gpu=51.90 ms mean=0.657 max=255 diffpx=2.223%
+1920x1080 run 4: cpu=1005.5 ms gpu=51.60 ms mean=0.657 max=255 diffpx=2.223%
+1920x1080 run 5: cpu=998.5 ms gpu=49.00 ms mean=0.657 max=255 diffpx=2.223%
+2560x1440 run 0: cpu=1836.3 ms gpu=105.90 ms mean=0.656 max=255 diffpx=2.234%
+2560x1440 run 1: cpu=1698.8 ms gpu=80.00 ms mean=0.656 max=255 diffpx=2.234%
+2560x1440 run 2: cpu=1712.3 ms gpu=75.60 ms mean=0.656 max=255 diffpx=2.234%
+2560x1440 run 3: cpu=1698.1 ms gpu=76.80 ms mean=0.656 max=255 diffpx=2.234%
+3840x2160 run 0: cpu=3789.2 ms gpu=166.20 ms mean=0.658 max=255 diffpx=2.233%
+3840x2160 run 1: cpu=3759.1 ms gpu=122.40 ms mean=0.658 max=255 diffpx=2.233%
+3840x2160 run 2: cpu=3934.5 ms gpu=120.60 ms mean=0.658 max=255 diffpx=2.233%
+3840x2160 run 3: cpu=3840.3 ms gpu=123.80 ms mean=0.658 max=255 diffpx=2.233%
+7680x4320 run 0: cpu=15243.7 ms gpu=590.10 ms mean=0.663 max=255 diffpx=2.247%
+7680x4320 run 1: cpu=15235.6 ms gpu=456.40 ms mean=0.663 max=255 diffpx=2.247%
+7680x4320 run 2: cpu=15090.3 ms gpu=447.30 ms mean=0.663 max=255 diffpx=2.247%
+final 1920x1080: {'width': 1920, 'height': 1080, 'cpuF32': False, 'cpuMs': 948, 'gpuMs': 73.40000000596046, 'speedup': '12.92x', 'meanDiff': '0.657', 'maxDiff': '255', 'diffPixelsPct': 2.2233314043209877, 'diff16Pct': 0.8352141203703703, 'diff64Pct': 0.6469907407407407}
+diff histogram f64 {'eq0': 2027497, '1': 19517, '2-16': 9267, '17-64': 3903, '>64': 13416}
+cpuF32 640 360 {'width': 640, 'height': 360, 'cpuF32': True, 'cpuMs': 235.10000002384186, 'gpuMs': 16.30000001192093, 'speedup': '14.42x', 'meanDiff': '0.644', 'maxDiff': '255', 'diffPixelsPct': 2.177517361111111, 'diff16Pct': 0.8133680555555556, 'diff64Pct': 0.6323784722222222}
+cpuF32 1920 1080 {'width': 1920, 'height': 1080, 'cpuF32': True, 'cpuMs': 1496.800000011921, 'gpuMs': 48.79999998211861, 'speedup': '30.67x', 'meanDiff': '0.670', 'maxDiff': '255', 'diffPixelsPct': 2.271749614197531, 'diff16Pct': 0.8539737654320988, 'diff64Pct': 0.662085262345679}
+cpuF32 3840 2160 {'width': 3840, 'height': 2160, 'cpuF32': True, 'cpuMs': 5766.800000011921, 'gpuMs': 114.90000000596046, 'speedup': '50.19x', 'meanDiff': '0.682', 'maxDiff': '255', 'diffPixelsPct': 2.301142939814815, 'diff16Pct': 0.8689477237654321, 'diff64Pct': 0.6739728009259259}
+diff histogram f32 {'eq0': 2026493, '1': 19805, '2-16': 9594, '17-64': 3979, '>64': 13729}

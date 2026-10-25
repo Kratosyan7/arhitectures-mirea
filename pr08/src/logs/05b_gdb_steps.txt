@@ -1,0 +1,41 @@
+(gdb) stepi
+13	        la   a1, helloworld  # a1 = адрес строки
+(gdb) info registers a0 pc
+a0             0x1	1
+pc             0x100ec	0x100ec <main_app+4>
+(gdb) stepi
+0x00000000000100f0	13	        la   a1, helloworld  # a1 = адрес строки
+(gdb) info registers a1 pc
+a1             0x110ec	69868
+pc             0x100f0	0x100f0 <main_app+8>
+(gdb) stepi
+14	        addi a2, x0, 40      # a2 = длина строки в байтах UTF-8 (40)
+(gdb) info registers a1 pc
+a1             0x11104	69892
+pc             0x100f4	0x100f4 <main_app+12>
+(gdb) x/s $a1
+0x11104:	"Мирзоян А.О._ИКБО-41-25_14\nA6"
+(gdb) x/8xb $a1
+0x11104:	0xd0	0x9c	0xd0	0xb8	0xd1	0x80	0xd0	0xb7
+(gdb) x/4xg $sp
+0x2aaaab2aae70:	0x0000000000000001	0x00002aaaab2ab25f
+0x2aaaab2aae80:	0x0000000000000000	0x00002aaaab2ab270
+(gdb) stepi
+15	        addi a7, x0, 64      # a7 = 64 – системный вызов write
+(gdb) info registers a2 pc
+a2             0x28	40
+pc             0x100f8	0x100f8 <main_app+16>
+(gdb) stepi
+16	        ecall                # выполняем системный вызов (печать строки)
+(gdb) info registers a7 pc
+a7             0x40	64
+pc             0x100fc	0x100fc <main_app+20>
+(gdb) x/i $pc
+=> 0x100fc <main_app+20>:	ecall
+(gdb) stepi
+17	        j    main_app        # вместо exit – переход в начало программы
+(gdb) info registers a0 pc
+a0             0x28	40
+pc             0x10100	0x10100 <main_app+24>
+(gdb) x/i $pc
+=> 0x10100 <main_app+24>:	j	0x100e8 <main_app>

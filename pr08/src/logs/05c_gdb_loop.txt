@@ -1,0 +1,25 @@
+(gdb) stepi
+
+Breakpoint 1, main_app () at main_app.S:12
+12	        addi a0, x0, 1       # a0 = 1 - стандартный вывод (stdout)
+(gdb) info registers pc
+pc             0x100e8	0x100e8 <main_app>
+(gdb) x/i $pc
+=> 0x100e8 <main_app>:	li	a0,1
+(gdb) continue
+
+Breakpoint 1, main_app () at main_app.S:12
+12	        addi a0, x0, 1       # a0 = 1 - стандартный вывод (stdout)
+(gdb) info registers a0 a1 a2 a7 pc
+a0             0x28	40
+a1             0x11104	69892
+a2             0x28	40
+a7             0x40	64
+pc             0x100e8	0x100e8 <main_app>
+(gdb) info breakpoints
+Num     Type           Disp Enb Address            What
+1       breakpoint     keep y   0x00000000000100e8 main_app.S:12
+	breakpoint already hit 2 times
+(gdb) kill
+Kill the program being debugged? (y or n) [answered Y; input not from terminal]
+[Inferior 1 (process 1550668) killed]

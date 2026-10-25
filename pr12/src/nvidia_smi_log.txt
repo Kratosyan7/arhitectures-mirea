@@ -1,0 +1,8 @@
+ashot@linux:~/pr12$ nvidia-smi --query-gpu=index,name,pci.device_id,memory.total,clocks.max.sm,clocks.max.memory,pcie.link.gen.max,pcie.link.width.max,power.limit,driver_version --format=csv
+index, name, pci.device_id, memory.total [MiB], clocks.max.sm [MHz], clocks.max.memory [MHz], pcie.link.gen.max, pcie.link.width.max, power.limit [W], driver_version
+0, NVIDIA GeForce RTX 3060, 0x248710DE, 12288 MiB, 2100 MHz, 7501 MHz, 3, 16, 170.00 W, 580.173.02
+1, NVIDIA GeForce RTX 3060, 0x248710DE, 12288 MiB, 2100 MHz, 7501 MHz, 3, 16, 170.00 W, 580.173.02
+ashot@linux:~/pr12$ nvidia-smi -q -i 0 | grep -E "Product Architecture|GPU Part Number|Device Max"
+    Product Architecture                               : Ampere
+    GPU Part Number                                    : 2487-150-A1
+                Device Max                             : 4

@@ -1,0 +1,120 @@
+ashot@linux:~/Documents/arhitectures-mirea/pr08/src/main_app$ qemu-riscv64 -g 1234 ./main_app_debug &
+ashot@linux:~/Documents/arhitectures-mirea/pr08/src/main_app$ gdb-multiarch -q -nx -batch -x gdb_session.gdb ./main_app_debug
+(gdb) set pagination off
+(gdb) target remote :1234
+warning: BFD: warning: system-supplied DSO at 0x2aaaab2ac000 has a corrupt string table index
+main_app () at main_app.S:12
+12	        addi a0, x0, 1       # a0 = 1 - стандартный вывод (stdout)
+(gdb) info registers pc
+pc             0x100e8	0x100e8 <main_app>
+(gdb) break main_app
+Breakpoint 1 at 0x100e8: file main_app.S, line 12.
+(gdb) disassemble main_app
+Dump of assembler code for function main_app:
+=> 0x00000000000100e8 <+0>:	li	a0,1
+   0x00000000000100ec <+4>:	auipc	a1,0x1
+   0x00000000000100f0 <+8>:	addi	a1,a1,24 # 0x11104
+   0x00000000000100f4 <+12>:	li	a2,40
+   0x00000000000100f8 <+16>:	li	a7,64
+   0x00000000000100fc <+20>:	ecall
+   0x0000000000010100 <+24>:	j	0x100e8 <main_app>
+End of assembler dump.
+(gdb) info registers
+ra             0x0	0x0
+sp             0x2aaaab2aae70	0x2aaaab2aae70
+gp             0x0	0x0
+tp             0x0	0x0
+t0             0x0	0
+t1             0x0	0
+t2             0x0	0
+fp             0x0	0x0
+s1             0x0	0
+a0             0x0	0
+a1             0x0	0
+a2             0x0	0
+a3             0x0	0
+a4             0x0	0
+a5             0x0	0
+a6             0x0	0
+a7             0x0	0
+s2             0x0	0
+s3             0x0	0
+s4             0x0	0
+s5             0x0	0
+s6             0x0	0
+s7             0x0	0
+s8             0x0	0
+s9             0x0	0
+s10            0x0	0
+s11            0x0	0
+t3             0x0	0
+t4             0x0	0
+t5             0x0	0
+t6             0x0	0
+pc             0x100e8	0x100e8 <main_app>
+(gdb) stepi
+13	        la   a1, helloworld  # a1 = адрес строки
+(gdb) info registers a0 pc
+a0             0x1	1
+pc             0x100ec	0x100ec <main_app+4>
+(gdb) stepi
+0x00000000000100f0	13	        la   a1, helloworld  # a1 = адрес строки
+(gdb) info registers a1 pc
+a1             0x110ec	69868
+pc             0x100f0	0x100f0 <main_app+8>
+(gdb) stepi
+14	        addi a2, x0, 40      # a2 = длина строки в байтах UTF-8 (40)
+(gdb) info registers a1 pc
+a1             0x11104	69892
+pc             0x100f4	0x100f4 <main_app+12>
+(gdb) x/s $a1
+0x11104:	"Мирзоян А.О._ИКБО-41-25_14\nA6"
+(gdb) x/8xb $a1
+0x11104:	0xd0	0x9c	0xd0	0xb8	0xd1	0x80	0xd0	0xb7
+(gdb) x/4xg $sp
+0x2aaaab2aae70:	0x0000000000000001	0x00002aaaab2ab25f
+0x2aaaab2aae80:	0x0000000000000000	0x00002aaaab2ab270
+(gdb) stepi
+15	        addi a7, x0, 64      # a7 = 64 – системный вызов write
+(gdb) info registers a2 pc
+a2             0x28	40
+pc             0x100f8	0x100f8 <main_app+16>
+(gdb) stepi
+16	        ecall                # выполняем системный вызов (печать строки)
+(gdb) info registers a7 pc
+a7             0x40	64
+pc             0x100fc	0x100fc <main_app+20>
+(gdb) x/i $pc
+=> 0x100fc <main_app+20>:	ecall
+(gdb) stepi
+17	        j    main_app        # вместо exit – переход в начало программы
+(gdb) info registers a0 pc
+a0             0x28	40
+pc             0x10100	0x10100 <main_app+24>
+(gdb) x/i $pc
+=> 0x10100 <main_app+24>:	j	0x100e8 <main_app>
+(gdb) stepi
+
+Breakpoint 1, main_app () at main_app.S:12
+12	        addi a0, x0, 1       # a0 = 1 - стандартный вывод (stdout)
+(gdb) info registers pc
+pc             0x100e8	0x100e8 <main_app>
+(gdb) x/i $pc
+=> 0x100e8 <main_app>:	li	a0,1
+(gdb) continue
+
+Breakpoint 1, main_app () at main_app.S:12
+12	        addi a0, x0, 1       # a0 = 1 - стандартный вывод (stdout)
+(gdb) info registers a0 a1 a2 a7 pc
+a0             0x28	40
+a1             0x11104	69892
+a2             0x28	40
+a7             0x40	64
+pc             0x100e8	0x100e8 <main_app>
+(gdb) info breakpoints
+Num     Type           Disp Enb Address            What
+1       breakpoint     keep y   0x00000000000100e8 main_app.S:12
+	breakpoint already hit 2 times
+(gdb) kill
+Kill the program being debugged? (y or n) [answered Y; input not from terminal]
+[Inferior 1 (process 1550668) killed]

@@ -1,0 +1,1 @@
+riscv64-linux-gnu-gcc -O2 -static -mno-relax -DNO_MAIN -o tolower_bench tolower_bench.c tolower.c tolower_asm.S

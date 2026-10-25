@@ -1,0 +1,4 @@
+variant,best_time_s,ns_per_call
+toupper1 (2 ветвления),0.682614,227.538
+toupper2 (1 сравн. bgeu),0.620794,206.931
+toupper3 (маска 0xDF),0.524967,174.989

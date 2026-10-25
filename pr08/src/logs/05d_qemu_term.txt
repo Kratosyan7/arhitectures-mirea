@@ -1,0 +1,4 @@
+ashot@linux:~/Documents/arhitectures-mirea/pr08/src/main_app$ qemu-riscv64 -g 1234 ./main_app_debug
+Мирзоян А.О._ИКБО-41-25_14
+Мирзоян А.О._ИКБО-41-25_14
+qemu-riscv64: QEMU: Terminated via GDBstub

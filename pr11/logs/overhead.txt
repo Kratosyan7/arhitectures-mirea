@@ -1,0 +1,16 @@
+ashot@linux:~/pr11$ python -m src.measure_overhead
+Накладные расходы multiprocessing.Pool (медиана из 10 замеров)
+  p = 2: 10.6 мс
+  p = 4: 14.6 мс
+  p = 6: 19.2 мс
+
+Разложение времени parallel_integration_openmp (вариант, N = 12,000,000), с:
+  p |  всего | старт 1-го | старт посл. | счёт min | счёт max | сбор+закр.
+  2 |  1.158 |      0.009 |       0.009 |    1.032 |    1.145 |      0.004
+  4 |  0.668 |      0.019 |       0.020 |    0.580 |    0.644 |      0.004
+  6 |  0.457 |      0.030 |       0.031 |    0.340 |    0.422 |      0.004
+ashot@linux:~/pr11$ time mpiexec -n 6 python -c "from mpi4py import MPI"
+
+real	0m0.197s
+user	0m0.504s
+sys	0m0.452s

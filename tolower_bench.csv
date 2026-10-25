@@ -1,0 +1,4 @@
+impl,best_time_s,ns_per_call
+my_tolower (C),0.582609,116.522
+tolower_branch (asm),0.378662,75.732
+tolower_nobranch (asm),0.350752,70.150

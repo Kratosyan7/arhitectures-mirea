@@ -1,0 +1,19 @@
+ashot@linux:~/Documents/arhitectures-mirea$ source .tools/env.sh
+ashot@linux:~/Documents/arhitectures-mirea$ lsb_release -d; uname -m
+Description:	Ubuntu 24.04.5 LTS
+x86_64
+ashot@linux:~/Documents/arhitectures-mirea$ riscv64-linux-gnu-gcc --version | head -1
+riscv64-linux-gnu-gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
+ashot@linux:~/Documents/arhitectures-mirea$ riscv64-linux-gnu-as --version | head -1
+GNU assembler (GNU Binutils for Ubuntu) 2.42
+ashot@linux:~/Documents/arhitectures-mirea$ riscv64-linux-gnu-ld --version | head -1
+GNU ld (GNU Binutils for Ubuntu) 2.42
+ashot@linux:~/Documents/arhitectures-mirea$ qemu-riscv64 --version | head -1
+qemu-riscv64 version 8.2.2 (Debian 1:8.2.2+ds-0ubuntu1.18)
+ashot@linux:~/Documents/arhitectures-mirea$ gdb-multiarch --version | head -1
+GNU gdb (Ubuntu 15.1-1ubuntu1~24.04.1) 15.1
+ashot@linux:~/Documents/arhitectures-mirea$ make --version | head -1; cmake --version | head -1
+GNU Make 4.3
+cmake version 3.28.3
+ashot@linux:~/Documents/arhitectures-mirea$ echo $QEMU_LD_PREFIX
+~/Documents/arhitectures-mirea/.tools/root/usr/riscv64-linux-gnu

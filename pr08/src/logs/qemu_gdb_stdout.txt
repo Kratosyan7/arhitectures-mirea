@@ -1,0 +1,3 @@
+Мирзоян А.О._ИКБО-41-25_14
+Мирзоян А.О._ИКБО-41-25_14
+qemu-riscv64: QEMU: Terminated via GDBstub

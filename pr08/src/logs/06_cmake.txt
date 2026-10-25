@@ -1,0 +1,15 @@
+ashot@linux:~/Documents/arhitectures-mirea/pr08/src/cmake$ cmake -S . -B build-release -DCMAKE_BUILD_TYPE=Release > /dev/null && cmake --build build-release
+[ 50%] Building ASM object CMakeFiles/hello_world.dir/hello_world.S.o
+[100%] Linking ASM executable hello_world
+[100%] Built target hello_world
+ashot@linux:~/Documents/arhitectures-mirea/pr08/src/cmake$ cmake -S . -B build-debug -DCMAKE_BUILD_TYPE=Debug > /dev/null && cmake --build build-debug
+[ 50%] Building ASM object CMakeFiles/hello_world.dir/hello_world.S.o
+[100%] Linking ASM executable hello_world
+[100%] Built target hello_world
+ashot@linux:~/Documents/arhitectures-mirea/pr08/src/cmake$ file build-release/hello_world build-debug/hello_world | sed 's/, version 1 (SYSV)//'
+build-release/hello_world: ELF 64-bit LSB executable, UCB RISC-V, RVC, double-float ABI, statically linked, BuildID[sha1]=0756983cc10252f541c777d3ae29f716b85a8061, stripped
+build-debug/hello_world:   ELF 64-bit LSB executable, UCB RISC-V, RVC, double-float ABI, statically linked, BuildID[sha1]=cb4f97a164554668da8345f77f89647c3a3bdef0, with debug_info, not stripped
+ashot@linux:~/Documents/arhitectures-mirea/pr08/src/cmake$ qemu-riscv64 build-release/hello_world
+Мирзоян А.О._ИКБО-41-25_14
+ashot@linux:~/Documents/arhitectures-mirea/pr08/src/cmake$ qemu-riscv64 build-debug/hello_world
+Мирзоян А.О._ИКБО-41-25_14

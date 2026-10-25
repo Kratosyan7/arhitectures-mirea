@@ -1,0 +1,32 @@
+ashot@linux:~/Documents/arhitectures-mirea/pr08/src/hello$ tail -2 hello_world.S
+.data
+helloworld: .ascii "Мирзоян А.О._ИКБО-41-25_14\n" # строка для вывода (40 байт)
+ashot@linux:~/Documents/arhitectures-mirea/pr08/src/hello$ cat build.sh
+#!/bin/bash
+# Файл сборки проекта (аналог листинга 8.5) для кросс-тулчейна RISC-V
+riscv64-linux-gnu-as -o hello_world.o hello_world.S
+riscv64-linux-gnu-ld -o hello_world hello_world.o
+ashot@linux:~/Documents/arhitectures-mirea/pr08/src/hello$ ./build.sh
+ashot@linux:~/Documents/arhitectures-mirea/pr08/src/hello$ ls -l hello_world*
+-rwxrwxr-x 1 ashot ashot 1384 Oct 25 13:37 hello_world
+-rw-rw-r-- 1 ashot ashot 1224 Oct 25 13:37 hello_world.o
+-rw-rw-r-- 1 ashot ashot 1642 Oct 25 13:36 hello_world.S
+ashot@linux:~/Documents/arhitectures-mirea/pr08/src/hello$ file hello_world
+hello_world: ELF 64-bit LSB executable, UCB RISC-V, double-float ABI, version 1 (SYSV), statically linked, not stripped
+ashot@linux:~/Documents/arhitectures-mirea/pr08/src/hello$ qemu-riscv64 ./hello_world; echo "exit code = $?"
+Мирзоян А.О._ИКБО-41-25_14
+exit code = 0
+ashot@linux:~/Documents/arhitectures-mirea/pr08/src/hello$ qemu-riscv64 ./hello_world | wc -c
+40
+ashot@linux:~/Documents/arhitectures-mirea/pr08/src/hello$ riscv64-linux-gnu-objdump -d hello_world | tail -11
+
+00000000000100e8 <_start>:
+   100e8:	00100513          	li	a0,1
+   100ec:	00001597          	auipc	a1,0x1
+   100f0:	02058593          	addi	a1,a1,32 # 1110c <__DATA_BEGIN__>
+   100f4:	02800613          	li	a2,40
+   100f8:	04000893          	li	a7,64
+   100fc:	00000073          	ecall
+   10100:	00000513          	li	a0,0
+   10104:	05d00893          	li	a7,93
+   10108:	00000073          	ecall

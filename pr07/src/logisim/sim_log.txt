@@ -1,0 +1,8 @@
+start: INT=0 LVL=0 RET=0 SP=0 VEC=0 | LVL=0 SP=0
+IRQ2 при 0x3144: INT=1 LVL=0 RET=0 SP=0 VEC=12D | LVL=0 SP=0
+вход в ПОП клавиатуры: INT=0 LVL=3 RET=3145 SP=1 VEC=12D | LVL=3 SP=1
+IRQ3 при ПОП клав. (не принят): INT=0 LVL=3 RET=3145 SP=1 VEC=191 | LVL=3 SP=1
+IRQ0 при 0x0137: INT=1 LVL=3 RET=0 SP=1 VEC=65 | LVL=3 SP=1
+вход в ПОП HDD: INT=0 LVL=1 RET=138 SP=2 VEC=65 | LVL=1 SP=2
+возврат из ПОП HDD: INT=0 LVL=3 RET=3145 SP=1 VEC=0 | LVL=3 SP=1
+возврат из ПОП клавиатуры: INT=0 LVL=0 RET=0 SP=0 VEC=0 | LVL=0 SP=0

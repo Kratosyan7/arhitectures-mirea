@@ -1,0 +1,54 @@
+ashot@linux:~/Documents/arhitectures-mirea/pr08/src/main_app$ qemu-riscv64 -g 1234 ./main_app_debug &
+ashot@linux:~/Documents/arhitectures-mirea/pr08/src/main_app$ gdb-multiarch -q -nx -batch -x gdb_session.gdb ./main_app_debug
+(gdb) set pagination off
+(gdb) target remote :1234
+warning: BFD: warning: system-supplied DSO at 0x2aaaab2ac000 has a corrupt string table index
+main_app () at main_app.S:12
+12	        addi a0, x0, 1       # a0 = 1 - стандартный вывод (stdout)
+(gdb) info registers pc
+pc             0x100e8	0x100e8 <main_app>
+(gdb) break main_app
+Breakpoint 1 at 0x100e8: file main_app.S, line 12.
+(gdb) disassemble main_app
+Dump of assembler code for function main_app:
+=> 0x00000000000100e8 <+0>:	li	a0,1
+   0x00000000000100ec <+4>:	auipc	a1,0x1
+   0x00000000000100f0 <+8>:	addi	a1,a1,24 # 0x11104
+   0x00000000000100f4 <+12>:	li	a2,40
+   0x00000000000100f8 <+16>:	li	a7,64
+   0x00000000000100fc <+20>:	ecall
+   0x0000000000010100 <+24>:	j	0x100e8 <main_app>
+End of assembler dump.
+(gdb) info registers
+ra             0x0	0x0
+sp             0x2aaaab2aae70	0x2aaaab2aae70
+gp             0x0	0x0
+tp             0x0	0x0
+t0             0x0	0
+t1             0x0	0
+t2             0x0	0
+fp             0x0	0x0
+s1             0x0	0
+a0             0x0	0
+a1             0x0	0
+a2             0x0	0
+a3             0x0	0
+a4             0x0	0
+a5             0x0	0
+a6             0x0	0
+a7             0x0	0
+s2             0x0	0
+s3             0x0	0
+s4             0x0	0
+s5             0x0	0
+s6             0x0	0
+s7             0x0	0
+s8             0x0	0
+s9             0x0	0
+s10            0x0	0
+s11            0x0	0
+t3             0x0	0
+t4             0x0	0
+t5             0x0	0
+t6             0x0	0
+pc             0x100e8	0x100e8 <main_app>
