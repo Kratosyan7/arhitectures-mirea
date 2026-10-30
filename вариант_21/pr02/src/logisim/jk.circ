@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project source="2.7.1" version="1.0">
+This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
+  <lib desc="#Wiring" name="0"/>
+  <lib desc="#Gates" name="1"/>
+  <lib desc="#Plexers" name="2"/>
+  <lib desc="#Arithmetic" name="3"/>
+  <lib desc="#Memory" name="4"/>
+  <lib desc="#I/O" name="5"/>
+  <lib desc="#Base" name="6"/>
+  <main name="jk_trigger"/>
+  <options>
+    <a name="gateUndefined" val="ignore"/>
+    <a name="simlimit" val="1000"/>
+    <a name="simrand" val="0"/>
+  </options>
+  <mappings>
+    <tool lib="6" map="Button2" name="Menu Tool"/>
+    <tool lib="6" map="Button3" name="Menu Tool"/>
+    <tool lib="6" map="Ctrl Button1" name="Menu Tool"/>
+  </mappings>
+  <toolbar>
+    <tool lib="6" name="Poke Tool"/>
+    <tool lib="6" name="Edit Tool"/>
+    <tool lib="6" name="Text Tool"/>
+    <sep/>
+    <tool lib="0" name="Pin"><a name="tristate" val="false"/></tool>
+    <tool lib="0" name="Pin"><a name="facing" val="west"/><a name="output" val="true"/><a name="labelloc" val="east"/></tool>
+    <tool lib="1" name="NOT Gate"/>
+    <tool lib="1" name="AND Gate"/>
+    <tool lib="1" name="OR Gate"/>
+  </toolbar>
+  <circuit name="jk_trigger">
+    <a name="circuit" val="jk_trigger"/>
+    <a name="clabel" val=""/>
+    <a name="clabelup" val="east"/>
+    <a name="clabelfont" val="SansSerif plain 12"/>
+    <wire from="(60,120)" to="(80,120)"/>
+    <wire from="(60,220)" to="(80,220)"/>
+    <wire from="(60,170)" to="(80,170)"/>
+    <wire from="(260,170)" to="(220,170)"/>
+    <wire from="(260,190)" to="(220,190)"/>
+    <wire from="(260,180)" to="(240,180)"/>
+    <wire from="(300,170)" to="(340,170)"/>
+    <wire from="(300,190)" to="(340,190)"/>
+    <wire from="(460,150)" to="(440,150)"/>
+    <wire from="(460,210)" to="(440,210)"/>
+    <wire from="(520,150)" to="(500,150)"/>
+    <comp lib="6" loc="(240,10)" name="Text">
+      <a name="text" val="JK-триггер: J,K — входы, CLK — синхросигнал, Q/¬Q — выходы"/>
+      <a name="font" val="SansSerif bold 16"/>
+    </comp>
+    <comp lib="0" loc="(60,120)" name="Pin">
+      <a name="tristate" val="false"/>
+      <a name="label" val="J"/>
+      <a name="width" val="1"/>
+      <a name="facing" val="east"/>
+      <a name="labelloc" val="west"/>
+    </comp>
+    <comp lib="0" loc="(60,220)" name="Pin">
+      <a name="tristate" val="false"/>
+      <a name="label" val="K"/>
+      <a name="width" val="1"/>
+      <a name="facing" val="east"/>
+      <a name="labelloc" val="west"/>
+    </comp>
+    <comp lib="0" loc="(60,170)" name="Clock">
+      <a name="facing" val="east"/>
+      <a name="label" val="CLK"/>
+    </comp>
+    <comp lib="4" loc="(300,170)" name="J-K Flip-Flop">
+    </comp>
+    <comp lib="0" loc="(460,150)" name="Pin">
+      <a name="output" val="true"/>
+      <a name="label" val="Q"/>
+      <a name="width" val="1"/>
+      <a name="facing" val="west"/>
+      <a name="labelloc" val="east"/>
+    </comp>
+    <comp lib="0" loc="(460,210)" name="Pin">
+      <a name="output" val="true"/>
+      <a name="label" val="nQ"/>
+      <a name="width" val="1"/>
+      <a name="facing" val="west"/>
+      <a name="labelloc" val="east"/>
+    </comp>
+    <comp lib="5" loc="(520,150)" name="LED">
+      <a name="label" val="Q"/>
+    </comp>
+    <comp lib="0" loc="(80,120)" name="Tunnel">
+      <a name="label" val="J"/>
+      <a name="facing" val="west"/>
+      <a name="width" val="1"/>
+    </comp>
+    <comp lib="0" loc="(80,220)" name="Tunnel">
+      <a name="label" val="K"/>
+      <a name="facing" val="west"/>
+      <a name="width" val="1"/>
+    </comp>
+    <comp lib="0" loc="(80,170)" name="Tunnel">
+      <a name="label" val="CLK"/>
+      <a name="facing" val="west"/>
+      <a name="width" val="1"/>
+    </comp>
+    <comp lib="0" loc="(220,170)" name="Tunnel">
+      <a name="label" val="J"/>
+      <a name="facing" val="east"/>
+      <a name="width" val="1"/>
+    </comp>
+    <comp lib="0" loc="(220,190)" name="Tunnel">
+      <a name="label" val="K"/>
+      <a name="facing" val="east"/>
+      <a name="width" val="1"/>
+    </comp>
+    <comp lib="0" loc="(240,180)" name="Tunnel">
+      <a name="label" val="CLK"/>
+      <a name="facing" val="east"/>
+      <a name="width" val="1"/>
+    </comp>
+    <comp lib="0" loc="(340,170)" name="Tunnel">
+      <a name="label" val="Q"/>
+      <a name="facing" val="west"/>
+      <a name="width" val="1"/>
+    </comp>
+    <comp lib="0" loc="(340,190)" name="Tunnel">
+      <a name="label" val="NQ"/>
+      <a name="facing" val="west"/>
+      <a name="width" val="1"/>
+    </comp>
+    <comp lib="0" loc="(440,150)" name="Tunnel">
+      <a name="label" val="Q"/>
+      <a name="facing" val="east"/>
+      <a name="width" val="1"/>
+    </comp>
+    <comp lib="0" loc="(440,210)" name="Tunnel">
+      <a name="label" val="NQ"/>
+      <a name="facing" val="east"/>
+      <a name="width" val="1"/>
+    </comp>
+    <comp lib="0" loc="(500,150)" name="Tunnel">
+      <a name="label" val="Q"/>
+      <a name="facing" val="east"/>
+      <a name="width" val="1"/>
+    </comp>
+  </circuit>
+</project>

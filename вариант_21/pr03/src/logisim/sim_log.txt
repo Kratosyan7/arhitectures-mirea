@@ -1,0 +1,7 @@
+ПР3 (вариант 21) — проверка микрооперации INPR ← MAR + OUTR на модели ОУ (движок Logisim 2.7.1)
+Управляющее слово: MSA=011(MAR) MSB=110(OutR) ALU=000010(A+B) E=1 DC=010(InpR) MSM=0 WR=0 = 1E0A8h
+Тест: MAR=0A2B, OutR=2C3D -> INPR = 3668
+
+операнды_загружены: S-шина=2C3D | AC=0 Flags=0 IR=0 InpR=0 MAR=A2B MDR=0 OutR=2C3D PC=0
+слово_выставлено_до_такта: S-шина=3668 | AC=0 Flags=0 IR=0 InpR=0 MAR=A2B MDR=0 OutR=2C3D PC=0
+после_такта: S-шина=3668 | AC=0 Flags=0 IR=0 InpR=3668 MAR=A2B MDR=0 OutR=2C3D PC=0

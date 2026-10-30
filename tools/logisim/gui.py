@@ -27,7 +27,8 @@ def ensure_xvfb():
     if os.path.exists("/tmp/.X11-unix/X77"):
         return
     subprocess.Popen([XVFB, ":77", "-screen", "0", f"{W}x{H}x24", "-nolisten", "tcp"],
-                     stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                     stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL,
+                     stderr=subprocess.DEVNULL, start_new_session=True)
     time.sleep(2)
 
 
@@ -36,7 +37,8 @@ class Logisim:
         ensure_xvfb()
         self.proc = subprocess.Popen(["java", "-Dawt.useSystemAAFontSettings=on", "-Dswing.aatext=true",
                                       "-jar", JAR, os.path.abspath(circ)],
-                                     stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                                     stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL,
+                                     stderr=subprocess.DEVNULL, start_new_session=True)
         for _ in range(60):
             time.sleep(0.5)
             if any(n and "Logisim" in n for _, n, *_ in xshot.windows()):
