@@ -1,0 +1,7 @@
+ПР3 (вариант 23) — проверка микрооперации OUTR ← AC NOR OUTR на модели ОУ (движок Logisim 2.7.1)
+Управляющее слово: MSA=001(AC) MSB=110(OutR) ALU=100100(F=1,M=0,S2S1S0=010 — НЕ-ИЛИ) E=1 DC=001(OutR) MSM=0 WR=0 = E924h
+Тест: AC=3C5A, OutR=18E4 -> OUTR = C301 = ¬(AC ∨ OutR)
+
+операнды_загружены: S-шина=18E4 | AC=3C5A Flags=0 IR=0 InpR=0 MAR=0 MDR=0 OutR=18E4 PC=0
+слово_выставлено_до_такта: S-шина=C301 | AC=3C5A Flags=0 IR=0 InpR=0 MAR=0 MDR=0 OutR=18E4 PC=0
+после_такта: S-шина=A4 | AC=3C5A Flags=2 IR=0 InpR=0 MAR=0 MDR=0 OutR=C301 PC=0

@@ -182,15 +182,29 @@ def table(doc, rows, caption):
     t.alignment = WD_TABLE_ALIGNMENT.CENTER
     cell_border(t)
     size = 12 if ncol <= 6 else (10 if ncol <= 12 else 8)
+    # Шапка может группировать столбцы: ячейка «<» объединяется с соседней слева
+    # (горизонтальный colspan), так в шапке видно, какие столбцы к какому полю относятся.
     for i, r in enumerate(rows):
-        for j in range(ncol):
+        j = 0
+        while j < ncol:
             text = r[j] if j < len(r) else ""
-            cp = t.cell(i, j).paragraphs[0]
+            span = 1
+            while j + span < ncol and j + span < len(r) and r[j + span].strip() == "<":
+                span += 1
+            if span > 1:
+                anchor = t.cell(i, j).merge(t.cell(i, j + span - 1))
+            else:
+                anchor = t.cell(i, j)
+            while len(anchor.paragraphs) > 1:                 # убрать лишние абзацы после merge
+                el = anchor.paragraphs[-1]._element
+                el.getparent().remove(el)
+            cp = anchor.paragraphs[0]
             cp.alignment = WD_ALIGN_PARAGRAPH.CENTER
             cp.paragraph_format.first_line_indent = Cm(0)
             cp.paragraph_format.space_after = Pt(0)
             cp.paragraph_format.line_spacing = 1.0
-            add_inline(cp, text, size, bold=(i == 0))
+            add_inline(cp, text, size, bold=(i == 0 or span > 1))
+            j += span
     para(doc, "", spacing=1.0)
 
 
