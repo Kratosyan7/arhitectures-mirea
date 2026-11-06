@@ -1,0 +1,9 @@
+исх: S-шина=DF0 Управляющее слово=C0 | AC=CCAA Flags=0 IR=0 InpR=0 MAR=0 MDR=0 OutR=0 PC=DF0 Счётчик тактов=0
+C0t0: S-шина=DF0 Управляющее слово=B8 | AC=CCAA Flags=0 IR=0 InpR=0 MAR=DF0 MDR=0 OutR=0 PC=DF0 Счётчик тактов=1
+C0t1: S-шина=860B Управляющее слово=800D0 | AC=CCAA Flags=0 IR=0 InpR=0 MAR=DF0 MDR=860B OutR=0 PC=DF0 Счётчик тактов=2
+C0t2: S-шина=DF1 Управляющее слово=1F2 | AC=CCAA Flags=2 IR=860B InpR=0 MAR=DF0 MDR=860B OutR=0 PC=DF0 Счётчик тактов=3
+C0t3: S-шина=860B Управляющее слово=400C2 | AC=CCAA Flags=0 IR=860B InpR=0 MAR=DF0 MDR=860B OutR=0 PC=DF1 Счётчик тактов=0
+C2t0: S-шина=DF1 Управляющее слово=BA | AC=CCAA Flags=2 IR=860B InpR=0 MAR=860B MDR=860B OutR=0 PC=DF1 Счётчик тактов=1
+C2t1: S-шина=349A Управляющее слово=80EE2 | AC=CCAA Flags=0 IR=860B InpR=0 MAR=860B MDR=CB65 OutR=0 PC=DF1 Счётчик тактов=2
+C2t2: S-шина=349B Управляющее слово=201E0 | AC=349A Flags=0 IR=860B InpR=0 MAR=860B MDR=CB65 OutR=0 PC=DF1 Счётчик тактов=3
+C2t3: S-шина=DF1 Управляющее слово=C0 | AC=349B Flags=0 IR=860B InpR=0 MAR=860B MDR=CB65 OutR=0 PC=DF1 Счётчик тактов=0

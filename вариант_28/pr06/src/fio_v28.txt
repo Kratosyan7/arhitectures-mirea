@@ -1,0 +1,40 @@
+ashot@linux:~/arhitectures-mirea/pr06$ fio --name=db_sim --filename=testfile --rw=randwrite --bs=8k --size=1G --ioengine=sync --fsync=1 --direct=0 --iodepth=1 --runtime=30s --time_based --group_reporting
+db_sim: (g=0): rw=randwrite, bs=(R) 8192B-8192B, (W) 8192B-8192B, (T) 8192B-8192B, ioengine=sync, iodepth=1
+fio-3.36
+Starting 1 process
+db_sim: Laying out IO file (1 file / 1024MiB)
+
+db_sim: (groupid=0, jobs=1): err= 0: pid=1089170: Fri Nov  6 12:47:03 2026
+  write: IOPS=116, BW=930KiB/s (952kB/s)(27.2MiB/30001msec); 0 zone resets
+    clat (usec): min=17, max=149, avg=43.15, stdev=10.26
+     lat (usec): min=17, max=150, avg=44.11, stdev=10.44
+    clat percentiles (usec):
+     |  1.00th=[   23],  5.00th=[   33], 10.00th=[   35], 20.00th=[   37],
+     | 30.00th=[   38], 40.00th=[   40], 50.00th=[   42], 60.00th=[   44],
+     | 70.00th=[   47], 80.00th=[   50], 90.00th=[   56], 95.00th=[   62],
+     | 99.00th=[   79], 99.50th=[   84], 99.90th=[  122], 99.95th=[  145],
+     | 99.99th=[  149]
+   bw (  KiB/s): min=  608, max= 1328, per=100.00%, avg=931.25, stdev=188.54, samples=59
+   iops        : min=   76, max=  166, avg=116.41, stdev=23.57, samples=59
+  lat (usec)   : 20=0.34%, 50=81.24%, 100=18.22%, 250=0.20%
+  fsync/fdatasync/sync_file_range:
+    sync (usec): min=1411, max=69249, avg=8549.24, stdev=9141.73
+    sync percentiles (usec):
+     |  1.00th=[ 3523],  5.00th=[ 4621], 10.00th=[ 4752], 20.00th=[ 4883],
+     | 30.00th=[ 5080], 40.00th=[ 5145], 50.00th=[ 5276], 60.00th=[ 5407],
+     | 70.00th=[ 5604], 80.00th=[ 5932], 90.00th=[26346], 95.00th=[32900],
+     | 99.00th=[41157], 99.50th=[43254], 99.90th=[64226], 99.95th=[67634],
+     | 99.99th=[69731]
+  cpu          : usr=0.28%, sys=1.68%, ctx=7050, majf=0, minf=11
+  IO depths    : 1=200.0%, 2=0.0%, 4=0.0%, 8=0.0%, 16=0.0%, 32=0.0%, >=64=0.0%
+     submit    : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, >=64=0.0%
+     complete  : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, >=64=0.0%
+     issued rwts: total=0,3486,0,3486 short=0,0,0,0 dropped=0,0,0,0
+     latency   : target=0, window=0, percentile=100.00%, depth=1
+
+Run status group 0 (all jobs):
+  WRITE: bw=930KiB/s (952kB/s), 930KiB/s-930KiB/s (952kB/s-952kB/s), io=27.2MiB (28.6MB), run=30001-30001msec
+
+Disk stats (read/write):
+    dm-0: ios=7/25122, sectors=240/215144, merge=0/0, ticks=37/42040, in_queue=42077, util=96.09%, aggrios=7/15098, aggsectors=240/216192, aggrmerge=0/10157, aggrticks=38/34232, aggrin_queue=62324, aggrutil=94.67%
+  sda: ios=7/15098, sectors=240/216192, merge=0/10157, ticks=38/34232, in_queue=62324, util=94.67%

@@ -1,0 +1,6 @@
+ashot@linux:~$ lsblk -d -o NAME,MODEL,TRAN,ROTA,SIZE,PHY-SEC,LOG-SEC /dev/sda; cat /sys/block/sda/queue/scheduler
+NAME MODEL        TRAN   ROTA   SIZE PHY-SEC LOG-SEC
+sda  Vi550 S3 SSD sata      0 119.2G     512     512
+none [mq-deadline] 
+ashot@linux:~$ fio --version
+fio-3.36
