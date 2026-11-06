@@ -1,0 +1,8 @@
+ashot@linux:~/Documents/arhitectures-mirea/вариант_28/pr09/src/task3$ make uppertst4
+riscv64-linux-gnu-gcc -o uppertst4 uppertst4.c
+ashot@linux:~/Documents/arhitectures-mirea/вариант_28/pr09/src/task3$ file uppertst4 | sed 's/, BuildID.*//'
+uppertst4: ELF 64-bit LSB pie executable, UCB RISC-V, RVC, double-float ABI, version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-riscv64-lp64d.so.1
+ashot@linux:~/Documents/arhitectures-mirea/вариант_28/pr09/src/task3$ qemu-riscv64 ./uppertst4
+Before str: мирзоян_а_о_икбо_41_25_вариант_28
+After str: мирзоян_а_о_икбо_41_25_вариант_28
+Str len = 54

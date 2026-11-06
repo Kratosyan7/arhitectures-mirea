@@ -1,0 +1,15 @@
+ashot@linux:~/Documents/arhitectures-mirea/вариант_28/pr08/src/cmake$ cmake -S . -B build-release -DCMAKE_BUILD_TYPE=Release > /dev/null && cmake --build build-release
+[ 50%] Building ASM object CMakeFiles/hello_world.dir/hello_world.S.o
+[100%] Linking ASM executable hello_world
+[100%] Built target hello_world
+ashot@linux:~/Documents/arhitectures-mirea/вариант_28/pr08/src/cmake$ qemu-riscv64 ./build-release/hello_world
+Мирзоян А.О._ИКБО-41-25_28
+ashot@linux:~/Documents/arhitectures-mirea/вариант_28/pr08/src/cmake$ cmake -S . -B build-debug -DCMAKE_BUILD_TYPE=Debug > /dev/null && cmake --build build-debug
+[ 50%] Building ASM object CMakeFiles/hello_world.dir/hello_world.S.o
+[100%] Linking ASM executable hello_world
+[100%] Built target hello_world
+ashot@linux:~/Documents/arhitectures-mirea/вариант_28/pr08/src/cmake$ file build-release/hello_world build-debug/hello_world
+build-release/hello_world: ELF 64-bit LSB executable, UCB RISC-V, RVC, double-float ABI, version 1 (SYSV), statically linked, BuildID[sha1]=2bba1977bb9ab889eb25e3a492adb68c6ed6d712, stripped
+build-debug/hello_world:   ELF 64-bit LSB executable, UCB RISC-V, RVC, double-float ABI, version 1 (SYSV), statically linked, BuildID[sha1]=0b86771fc1d9b6af7efbcbecc1916ac7c819e222, with debug_info, not stripped
+ashot@linux:~/Documents/arhitectures-mirea/вариант_28/pr08/src/cmake$ qemu-riscv64 ./build-debug/hello_world
+Мирзоян А.О._ИКБО-41-25_28

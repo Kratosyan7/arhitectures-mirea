@@ -1,0 +1,4 @@
+ashot@linux:~/pr10/src/logisim$ python3 gen_pr10.py
+wrote pr10_replspace.circ
+ashot@linux:~/pr10/src/logisim$ jjs -cp ../../../../.tools/logisim/logisim.jar check.js -- pr10_replspace.circ
+OK: обе схемы (с ветвлением и без) совпали с эталоном на всех 256 байтах

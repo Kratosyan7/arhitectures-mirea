@@ -16,3 +16,14 @@ pr10/src/*.objdump
 pr10/src/ghidra/
 # предпросмотры рендера Logisim от агентов (в отчётах используются GUI-скриншоты)
 pr*/src/logisim/preview_*.png
+
+# вариант_* (копии практик): те же исключения, что и для корневых pr*
+вариант_*/pr*/src/**/*.o
+вариант_*/pr10/src/bench_upper
+вариант_*/pr10/src/replspace_bench
+вариант_*/pr10/src/replspace_O2
+вариант_*/pr10/src/ghidra_restored
+вариант_*/pr10/src/creditcard
+вариант_*/pr10/src/creditcardpie
+вариант_*/pr10/src/creditcard_probe
+вариант_*/pr10/src/*.objdump

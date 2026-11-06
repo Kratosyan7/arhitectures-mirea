@@ -1,0 +1,8 @@
+start: INT=0 LVL=0 RET=0 SP=0 VEC=0 | LVL=0 SP=0
+IRQ3 (Сканер) при 0x3C93: INT=1 LVL=0 RET=0 SP=0 VEC=191 | LVL=0 SP=0
+вход в ПОП Сканера: INT=0 LVL=4 RET=3C94 SP=1 VEC=191 | LVL=4 SP=1
+IRQ0 (SSD) при 0x01BC: INT=1 LVL=4 RET=0 SP=1 VEC=65 | LVL=4 SP=1
+вход в ПОП SSD: INT=0 LVL=1 RET=1BD SP=2 VEC=65 | LVL=1 SP=2
+IRQ2 (Клавиатура) при ПОП SSD (не принят): INT=0 LVL=1 RET=1BD SP=2 VEC=12D | LVL=1 SP=2
+возврат из ПОП SSD: INT=0 LVL=4 RET=3C94 SP=1 VEC=0 | LVL=4 SP=1
+возврат из ПОП Сканера: INT=0 LVL=0 RET=0 SP=0 VEC=0 | LVL=0 SP=0

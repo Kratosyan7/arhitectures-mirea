@@ -1,0 +1,20 @@
+Входная строка : ThisIsRatherALargeVariableNameForTheUppercaseBenchmark
+  toupper1 (2 ветвления) -> THISISRATHERALARGEVARIABLENAMEFORTHEUPPERCASEBENCHMARK
+  toupper2 (1 сравн. bgeu) -> THISISRATHERALARGEVARIABLENAMEFORTHEUPPERCASEBENCHMARK
+  toupper3 (маска 0xDF) -> THISISRATHERALARGEVARIABLENAMEFORTHEUPPERCASEBENCHMARK
+Итераций в прогоне: 3000000, прогонов: 3
+
+Версия                 прогон время, с нс/вызов
+--------------------------------------------------------------
+toupper1 (2 ветвления)          1       0.7269       242.29
+toupper1 (2 ветвления)          2       0.6826       227.54
+toupper1 (2 ветвления)          3       0.7061       235.38
+--------------------------------------------------------------
+toupper2 (1 сравн. bgeu)          1       0.6764       225.46
+toupper2 (1 сравн. bgeu)          2       0.6356       211.87
+toupper2 (1 сравн. bgeu)          3       0.6208       206.93
+--------------------------------------------------------------
+toupper3 (маска 0xDF)            1       0.5448       181.59
+toupper3 (маска 0xDF)            2       0.5250       174.99
+toupper3 (маска 0xDF)            3       0.5525       184.17
+--------------------------------------------------------------

@@ -1,0 +1,19 @@
+ashot@linux:~/Documents/arhitectures-mirea/pr09/src/task4$ ./get_python_rv64.sh
+total 5276
+-rw-rw-r-- 1 ashot ashot   95808 Oct 25 13:43 libexpat1_2.6.1-2ubuntu0.6_riscv64.deb
+-rw-rw-r-- 1 ashot ashot   23070 Oct 25 13:43 libffi8_3.4.6-1build1_riscv64.deb
+-rw-rw-r-- 1 ashot ashot  834684 Oct 25 13:43 libpython3.12-minimal_3.12.3-1ubuntu0.17_riscv64.deb
+-rw-rw-r-- 1 ashot ashot 2028966 Oct 25 13:43 libpython3.12-stdlib_3.12.3-1ubuntu0.17_riscv64.deb
+-rw-rw-r-- 1 ashot ashot 2343668 Oct 25 13:43 python3.12-minimal_3.12.3-1ubuntu0.17_riscv64.deb
+-rw-rw-r-- 1 ashot ashot   61188 Oct 25 13:43 zlib1g_1.3.dfsg-3.1ubuntu2.3_riscv64.deb
+ashot@linux:~/Documents/arhitectures-mirea/pr09/src/task4$ du -sh ../../../.tools/pyrv/root
+24M	../../../.tools/pyrv/root
+ashot@linux:~/Documents/arhitectures-mirea/pr09/src/task4$ file ../../../.tools/pyrv/root/usr/bin/python3.12 | sed 's/, BuildID.*//'
+../../../.tools/pyrv/root/usr/bin/python3.12: ELF 64-bit LSB executable, UCB RISC-V, RVC, double-float ABI, version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-riscv64-lp64d.so.1
+ashot@linux:~/Documents/arhitectures-mirea/pr09/src/task4$ cat run_python_rv64.sh | tail -3
+PY=$ROOT/.tools/pyrv/root
+exec qemu-riscv64 -E LD_LIBRARY_PATH=$PY/usr/lib/riscv64-linux-gnu \
+     $PY/usr/bin/python3.12 "$@"
+ashot@linux:~/Documents/arhitectures-mirea/pr09/src/task4$ ./run_python_rv64.sh -c 'import sys, platform; print(sys.version); print(platform.machine(), sys.platform)'
+3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]
+riscv64 linux

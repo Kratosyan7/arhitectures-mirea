@@ -1,0 +1,19 @@
+ashot@linux:~/Documents/arhitectures-mirea/вариант_28/pr08/src/hello$ make clean
+rm -f *.o hello_world hello_world_debug
+ashot@linux:~/Documents/arhitectures-mirea/вариант_28/pr08/src/hello$ make release
+riscv64-linux-gnu-as hello_world.S -o hello_world.o
+riscv64-linux-gnu-ld -o hello_world hello_world.o
+riscv64-linux-gnu-strip hello_world
+ashot@linux:~/Documents/arhitectures-mirea/вариант_28/pr08/src/hello$ make debug
+riscv64-linux-gnu-as -g hello_world.S -o hello_world_debug.o
+riscv64-linux-gnu-ld -o hello_world_debug hello_world_debug.o
+ashot@linux:~/Documents/arhitectures-mirea/вариант_28/pr08/src/hello$ ls -l hello_world hello_world_debug
+-rwxrwxr-x 1 ashot ashot  728 Nov  6 13:10 hello_world
+-rwxrwxr-x 1 ashot ashot 2216 Nov  6 13:10 hello_world_debug
+ashot@linux:~/Documents/arhitectures-mirea/вариант_28/pr08/src/hello$ size hello_world hello_world_debug 2>/dev/null || riscv64-linux-gnu-size hello_world hello_world_debug
+   text	   data	    bss	    dec	    hex	filename
+     36	     40	      0	     76	     4c	hello_world
+     36	     40	      0	     76	     4c	hello_world_debug
+ashot@linux:~/Documents/arhitectures-mirea/вариант_28/pr08/src/hello$ make run
+qemu-riscv64 ./hello_world
+Мирзоян А.О._ИКБО-41-25_28
