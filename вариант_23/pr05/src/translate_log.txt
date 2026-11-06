@@ -1,0 +1,9 @@
+ashot@linux:~/arhitectures-mirea/pr05$ python3 src/translate.py
+Размер страницы: 2048 Б = 2^11 → смещение 11 бит
+VA = 0x4C12 = 0100110000010010b
+VPN    = VA >> 11    = 9 (0x9)
+Offset = VA & 0x7FF = 0x0412 (1042)
+Запись TLB: VPN = 4 → PFN = 10
+VPN 9 ≠ 4: записи нет в TLB → Page Fault (исключение, обработчик подкачки)
+Если бы страница была в TLB: PA = 10·0x800 + 0x412 = 0x5412
+Записи VPN = 4 соответствуют VA 0x2000–0x27FF, например 0x2412 → PA 0x5412

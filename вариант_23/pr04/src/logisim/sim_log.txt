@@ -1,0 +1,9 @@
+исх: S-шина=8F5 Управляющее слово=C0 | AC=FF35 Flags=0 IR=0 InpR=0 MAR=0 MDR=0 OutR=0 PC=8F5 Счётчик тактов=0
+C0t0: S-шина=8F5 Управляющее слово=B8 | AC=FF35 Flags=0 IR=0 InpR=0 MAR=8F5 MDR=0 OutR=0 PC=8F5 Счётчик тактов=1
+C0t1: S-шина=650D Управляющее слово=800D0 | AC=FF35 Flags=0 IR=0 InpR=0 MAR=8F5 MDR=650D OutR=0 PC=8F5 Счётчик тактов=2
+C0t2: S-шина=8F6 Управляющее слово=1F2 | AC=FF35 Flags=0 IR=650D InpR=0 MAR=8F5 MDR=650D OutR=0 PC=8F5 Счётчик тактов=3
+C0t3: S-шина=650D Управляющее слово=400C2 | AC=FF35 Flags=0 IR=650D InpR=0 MAR=8F5 MDR=650D OutR=0 PC=8F6 Счётчик тактов=0
+C2t0: S-шина=8F6 Управляющее слово=BA | AC=FF35 Flags=0 IR=650D InpR=0 MAR=650D MDR=650D OutR=0 PC=8F6 Счётчик тактов=1
+C2t1: S-шина=5473 Управляющее слово=30AE2 | AC=FF35 Flags=0 IR=650D InpR=0 MAR=650D MDR=AB46 OutR=0 PC=8F6 Счётчик тактов=2
+C2t2: S-шина=8F6 Управляющее слово=0 | AC=5473 Flags=0 IR=650D InpR=0 MAR=650D MDR=AB46 OutR=0 PC=8F6 Счётчик тактов=3
+C2t3: S-шина=8F6 Управляющее слово=C0 | AC=5473 Flags=0 IR=650D InpR=0 MAR=650D MDR=AB46 OutR=0 PC=8F6 Счётчик тактов=0

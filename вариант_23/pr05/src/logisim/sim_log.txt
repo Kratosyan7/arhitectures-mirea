@@ -1,0 +1,2 @@
+VA=0x0B345: HIT=0 Offset=1345 PA=x xxxx xxx1 0011 0100 0101 PFN=xxxx xxxx Page Fault=1 VPN=5 | 
+VA=0x17345: HIT=1 Offset=1345 PA=33345 PFN=19 Page Fault=0 VPN=B | 
